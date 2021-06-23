@@ -22,40 +22,40 @@
 
 "general.ok" = "OK";
 
-"share_extension.conversation_selection.account" = "Compte :";
-"share_extension.conversation_selection.title" = "Conversation :";
-"share_extension.send_button.title" = "Envoyer";
-"share_extension.conversation_selection.empty.value" = "Choisir";
-"share_extension.input.placeholder" = "Écrivez un message";
-"share_extension.sending_progress.title" = "Envoi…";
-"share_extension.preparing.title" = "Préparation en cours…";
-"share_extension.no_internet_connection.title" = "Pas de connexion internet";
-"share_extension.not_signed_in.title" = "Vous devez vous connecter sur Wire avant de pouvoir partager du contenu";
-"share_extension.not_signed_in.close_button" = "Fermer";
+"share_extension.conversation_selection.account" = "Account:";
+"share_extension.conversation_selection.title" = "Conversation:";
+"share_extension.send_button.title" = "Send";
+"share_extension.conversation_selection.empty.value" = "Choose";
+"share_extension.input.placeholder" = "Type a message";
+"share_extension.sending_progress.title" = "Sending…";
+"share_extension.preparing.title" = "Preparing…";
+"share_extension.no_internet_connection.title" = "No Internet Connection";
+"share_extension.not_signed_in.title" = "You need to sign into Wire before you can share anything";
+"share_extension.not_signed_in.close_button" = "Close";
 
 // Custom app lock - unlock
-"share_extension.unlock.title_label" = "Entrez le code d'accès pour déverrouiller Wire";
-"share_extension.unlock.submit_button.title" = "déverrouiller";
-"share_extension.unlock.textfield.placeholder" = "Saisissez votre code d'accès";
-"share_extension.unlock.hint_label" = "Code d'accès";
-"share_extension.unlock.error_label" = "Code d'accès erroné";
-"share_extension.unlock.alert.message" = "Ouvrez Wire pour créer un code d'accès";
-"share_extension.unlock.reveal_passcode" = "Révéler le code d'accès";
+"share_extension.unlock.title_label" = "Enter passcode to unlock Wire";
+"share_extension.unlock.submit_button.title" = "unlock";
+"share_extension.unlock.textfield.placeholder" = "Enter your passcode";
+"share_extension.unlock.hint_label" = "Passcode";
+"share_extension.unlock.error_label" = "Wrong passcode";
+"share_extension.unlock.alert.message" = "Open Wire to create a passcode";
+"share_extension.unlock.reveal_passcode" = "Reveal passcode";
 
-"share_extension.timeout.title" = "La connexion a expiré.";
-"share_extension.timeout.message" = "Vérifiez votre connexion internet et réessayez. Les pièces jointes ont été enregistrées dans la conversation.";
+"share_extension.timeout.title" = "The connection has timed out.";
+"share_extension.timeout.message" = "Check your Internet connection and try again. The attachments were saved in the conversation.";
 
-"content.file.too_big" = "Vous pouvez envoyer des fichiers jusqu'à %@";
-"content.file.unsupported_attachment" = "Pièce jointe non compatible";
-"share_extension.error.conversation_does_not_exist.message" = "Sélectionnez une conversation à partager.";
+"content.file.too_big" = "You can send files up to %@";
+"content.file.unsupported_attachment" = "Unsupported attachment";
+"share_extension.error.conversation_does_not_exist.message" = "Please select a conversation for sharing";
 
-"share_extension.privacy_security.lock_app.description" = "Déverrouiller Wire";
-"share_extension.logged_out.title" = "Vous avez été déconnecté de ce compte.";
-"share_extension.logged_out.message" = "Veuillez choisir un autre compte.";
+"share_extension.privacy_security.lock_app.description" = "Unlock Wire";
+"share_extension.logged_out.title" = "You've been logged out from this account.";
+"share_extension.logged_out.message" = "Please choose another account.";
 
-"conversation.displayname.emptygroup" = "Conversation de groupe vide";
-"meta.degraded.degradation_reason_message.singular" = "%@ utilise un nouvel appareil.";
-"meta.degraded.degradation_reason_message.plural" = "%@ utilisent de nouveaux appareils.";
-"meta.degraded.dialog_message" = "Voulez-vous quand même envoyer votre message ?";
-"meta.degraded.cancel_sending_button" = "Ne pas envoyer";
-"meta.degraded.send_anyway_button" = "Envoyer quand même";
+"conversation.displayname.emptygroup" = "Empty group conversation";
+"meta.degraded.degradation_reason_message.singular" = "%@ started using a new device.";
+"meta.degraded.degradation_reason_message.plural" = "%@ started using new devices.";
+"meta.degraded.dialog_message" = "Do you still want to send your message?";
+"meta.degraded.cancel_sending_button" = "Do not send";
+"meta.degraded.send_anyway_button" = "Send anyway";
