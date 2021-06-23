@@ -21,18 +21,16 @@ jobs:
           # For more info: https://github.com/crowdin/github-action/blob/master/action.yml
           project_id: ${{ secrets.CROWDIN_PROJECT_ID }}          
           token: ${{ secrets.CROWDIN_API_TOKEN }}
+          config: crowdin.yml
           
           upload_sources: true
           download_translations: true
           upload_translations: false
 
-          #create_pull_request: true
-          #localization_branch_name: chore/update-localization
-          #commit_message: "[Chore] Update localization"
-          #pull_request_title: "[Chore] Update localization"
-          #pull_request_body: "This PR pulls in the latest localization translations from Crowdin."
-
-          config: crowdin.yml
-          dryrun_action: false
+          create_pull_request: true
+          localization_branch_name: chore/update-localization
+          commit_message: "[Chore] Update localization"
+          pull_request_title: "[Chore] Update localization"
+          pull_request_body: "This PR pulls in the latest localization translations from Crowdin."
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
