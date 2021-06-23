@@ -33,6 +33,6 @@ jobs:
           #pull_request_body: "This PR pulls in the latest localization translations from Crowdin."
 
           config: crowdin.yml
-          dryrun_action: true
+          dryrun_action: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
