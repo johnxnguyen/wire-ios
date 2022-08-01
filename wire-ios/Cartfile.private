@@ -1,0 +1,2 @@
+github "wireapp/ios-snapshot-test-case" "4.0.0-xcframework"
+github "wireapp/swift-snapshot-testing" "1.9.0"
