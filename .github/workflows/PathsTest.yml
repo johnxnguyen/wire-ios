@@ -5,10 +5,7 @@ on:
     branches: [ "develop" ]
     paths: 
       - 'wire-ios/**'
-
-env:
-  derivePath: Hello JJ
-  
+      
 jobs:
   one:
     runs-on: macos-latest
@@ -16,14 +13,11 @@ jobs:
     outputs:
       output1: 'ios/wire-ios/build'
       
-    env:
-      derivePath: 'ios/wire-ios/build'
-    
     steps:
     - name: Echo
       run: echo "hello world"
     - name: Set derive path in job one
-      run: echo "Derive Path is $derivePath"
+      run: echo "Derive Path is $output1"
       
 
   two:
