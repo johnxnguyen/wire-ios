@@ -76,6 +76,9 @@ jobs:
       - name: Fetch derive path from job one
         run: echo ${{needs.build.outputs.derivePath}}
       
+      - name: Create XCFramework
+        uses: unsignedapps/swift-create-xcframework@v2
+        
       - name: Run unit tests
         run: |
           xcodebuild test -workspace wire-ios.xcworkspace -derivedDataPath ios/build -scheme Wire-iOS -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty && exit ${PIPESTATUS[0]}
