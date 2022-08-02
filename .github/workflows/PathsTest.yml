@@ -12,12 +12,15 @@ jobs:
     
     outputs:
       output1: 'ios/wire-ios/build'
+    
+    env:
+      path: 'ios/wire-ios/build'
       
     steps:
     - name: Echo
       run: echo "hello world"
     - name: Set derive path in job one
-      run: echo "${{ outputs.output1 }}"
+      run: echo "${{ env.path }}"
       
 
   two:
