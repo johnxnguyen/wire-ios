@@ -17,7 +17,7 @@ jobs:
     - name: Echo
       run: echo "hello world"
     - name: Set derive path in job one
-      run: echo outputs.output1
+      run: echo output1
       
 
   two:
