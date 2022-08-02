@@ -17,7 +17,7 @@ jobs:
     - name: Echo
       run: echo "hello world"
     - name: Set derive path in job one
-      run: echo "Derive Path is $output1"
+      run: echo "Derive Path is ${{outputs.output1}}"
       
 
   two:
