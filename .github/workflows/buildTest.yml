@@ -32,15 +32,18 @@ jobs:
     needs: changes
     runs-on: macOS-latest
     
-    outputs:
-        derivePath: 'ios/wire-ios/build'
+    #outputs:
+    #  output1: ${{ steps.step1.outputs.test }}
+      
+    #outputs:
+    #    derivePath: 'ios/wire-ios/build'
 
     env:
       derivePath: 'ios/wire-ios/build'
       
     steps:
       - uses: actions/checkout@v3
-
+      - uses: actions/upload-artifact@v2
       - name: List available Xcode versions
         run: ls /Applications | grep Xcode
       
@@ -71,17 +74,15 @@ jobs:
     
     steps:
       - uses: actions/checkout@v1
+      - uses: actions/download-artifact@master
       - name: Select Xcode
         run: sudo xcode-select -switch /Applications/Xcode_13.1.app && /usr/bin/xcodebuild -version
       - name: Fetch derive path from job one
         run: echo ${{needs.build.outputs.derivePath}}
-      
-      - name: Create XCFramework
-        uses: unsignedapps/swift-create-xcframework@v2
-        
+     
       - name: Run unit tests
         run: |
-          xcodebuild test -workspace wire-ios.xcworkspace -derivedDataPath ios/build -scheme Wire-iOS -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty && exit ${PIPESTATUS[0]}
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme Wire-iOS -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty && exit ${PIPESTATUS[0]}
 
   testSyncEngine:  
     needs: 
