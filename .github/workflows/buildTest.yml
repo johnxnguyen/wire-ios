@@ -55,9 +55,9 @@ jobs:
 
       - name: Build
         run: |
-          xcodebuild build -workspace wire-ios.xcworkspace -derivedDataPath ${{ env.derivePath }} -scheme WireDataModel -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
-          xcodebuild build -workspace wire-ios.xcworkspace -derivedDataPath ${{ env.derivePath }} -scheme WireSyncEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
-          xcodebuild build -workspace wire-ios.xcworkspace -derivedDataPath ${{ env.derivePath }} -scheme Wire-iOS -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireDataModel -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireSyncEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+          xcodebuild build -workspace wire-ios.xcworkspace -scheme Wire-iOS -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
           exit ${PIPESTATUS[0]}
           
 
@@ -76,7 +76,7 @@ jobs:
       
     - name: Run unit tests
       run: |
-        xcodebuild test -workspace wire-ios.xcworkspace -derivedDataPath ${{needs.build.outputs.derivePath}} -scheme Wire-iOS -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty && exit ${PIPESTATUS[0]}
+        xcodebuild test -workspace wire-ios.xcworkspace -scheme Wire-iOS -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty && exit ${PIPESTATUS[0]}
 
   testSyncEngine:  
     needs: 
@@ -93,7 +93,7 @@ jobs:
       
     - name: Run unit tests
       run: |
-        xcodebuild test -workspace wire-ios.xcworkspace -derivedDataPath ${{needs.build.outputs.derivePath}} -scheme WireSyncEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty && exit ${PIPESTATUS[0]}
+        xcodebuild test -workspace wire-ios.xcworkspace -scheme WireSyncEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty && exit ${PIPESTATUS[0]}
 
   testDataModel:  
     needs: 
