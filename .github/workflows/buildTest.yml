@@ -69,14 +69,16 @@ jobs:
     if: ${{ needs.changes.outputs.ui == 'true' }}
     runs-on: macos-latest
     
-      
     steps:
-    - name: Fetch derive path from job one
-      run: echo ${{needs.build.outputs.derivePath}}
+      - uses: actions/checkout@v1
+      - name: Select Xcode
+        run: sudo xcode-select -switch /Applications/Xcode_13.1.app && /usr/bin/xcodebuild -version
+      - name: Fetch derive path from job one
+        run: echo ${{needs.build.outputs.derivePath}}
       
-    - name: Run unit tests
-      run: |
-        xcodebuild test -workspace wire-ios.xcworkspace -scheme Wire-iOS -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty && exit ${PIPESTATUS[0]}
+      - name: Run unit tests
+        run: |
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme Wire-iOS -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty && exit ${PIPESTATUS[0]}
 
   testSyncEngine:  
     needs: 
@@ -102,8 +104,7 @@ jobs:
 
     if: ${{ needs.changes.outputs.dataModel == 'true' }}
     runs-on: macos-latest
-    
-      
+          
     steps:
     - name: Fetch derive path from job one
       run: echo ${{needs.build.outputs.derivePath}}
