@@ -43,7 +43,7 @@ jobs:
       
     steps:
       - uses: actions/checkout@v3
-      - uses: some/compile-action@v99
+      - uses: actions/compile-action@v99
       - uses: actions/upload-artifact@v2
       - name: List available Xcode versions
         run: ls /Applications | grep Xcode
