@@ -7,7 +7,7 @@ on:
       - 'wire-ios/**'
 
 env:
-  testVariable: Hello JJ
+  derivePath: Hello JJ
   
 jobs:
   one:
