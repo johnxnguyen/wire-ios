@@ -78,7 +78,7 @@ jobs:
       
       - name: Run unit tests
         run: |
-          xcodebuild test -workspace wire-ios.xcworkspace -scheme Wire-iOS -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty && exit ${PIPESTATUS[0]}
+          xcodebuild test -workspace wire-ios.xcworkspace -derivedDataPath ios/build -scheme Wire-iOS -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty && exit ${PIPESTATUS[0]}
 
   testSyncEngine:  
     needs: 
