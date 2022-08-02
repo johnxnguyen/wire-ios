@@ -14,13 +14,13 @@ jobs:
       output1: 'ios/wire-ios/build'
     
     env:
-      path: 'ios/wire-ios/build'
+      derivePath: 'ios/wire-ios/build'
       
     steps:
     - name: Echo
       run: echo "hello world"
     - name: Set derive path in job one
-      run: echo "${{ env.path }}"
+      run: echo "${{ env.derivePath }}"
       
 
   two:
@@ -32,3 +32,5 @@ jobs:
       run: echo "goodbye world"
     - name: Fetch derive path from job one
       run: echo ${{needs.one.outputs.output1}}
+    - name: Fetch derive path from job one env
+      run: echo "${{ env.derivePath }}"
