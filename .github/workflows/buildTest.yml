@@ -87,7 +87,7 @@ jobs:
           
       - name: Run UI Tests
         run: |
-          xcodebuild test -project Wire-iOS.xcodeproj -scheme Wire-iOS Tests -configuration Debug -derivedDataPath build
+          xcodebuild test -project Wire-iOS.xcodeproj -scheme Wire-iOS -configuration Debug -derivedDataPath build
   
       
   testSyncEngine:  
