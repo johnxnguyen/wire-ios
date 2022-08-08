@@ -81,13 +81,13 @@ jobs:
       - name: Build UI Tests
         run: |
           #xcodebuild build-for-testing -project Wire-iOS.xcodeproj -scheme Wire-iOS -configuration Debug -derivedDataPath build
-                    #xcodebuild build-for-testing -project Wire-iOS.xcodeproj -scheme Wire-iOS -configuration Debug -derivedDataPath /Users/runner/work/wire-ios/wire-ios/build          
-      - name: Clean tests
-        run: xcodebuild clean test -project Wire-iOS.xcodeproj -scheme Wire-iOS 
-                  
+          #xcodebuild build-for-testing -project Wire-iOS.xcodeproj -scheme Wire-iOS -configuration Debug -derivedDataPath /Users/runner/work/wire-ios/wire-ios/build          
+          xcodebuild build-for-testing -project Wire-iOS.xcodeproj -scheme Wire-iOS -configuration Debug -derivedDataPath build
+                      
       - name: Run UI Tests
         run: |
-          xcodebuild test-without-building -project Wire-iOS.xcodeproj -scheme Wire-iOS -configuration Debug -derivedDataPath build
+          xcodebuild test-without-building -project Wire-iOS.xcodeproj -scheme Wire-iOS Tests -configuration Debug -derivedDataPath build
+  
       
   testSyncEngine:  
     needs: 
