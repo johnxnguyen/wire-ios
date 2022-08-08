@@ -84,7 +84,7 @@ jobs:
           #xcodebuild build-for-testing -project Wire-iOS.xcodeproj -scheme Wire-iOS -configuration Debug -derivedDataPath /Users/runner/work/wire-ios/wire-ios/build          
           #xcodebuild build-for-testing -project Wire-iOS.xcodeproj -scheme Wire-iOS -configuration Debug -derivedDataPath build
           #xcodebuild test -project Wire-iOS.xcodeproj  -scheme Wire-iOS -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty && exit ${PIPESTATUS[0]}
-          
+          xcodebuild build -project Wire-iOS.xcodeproj -scheme Wire-iOS -configuration Debug -derivedDataPath build
       - name: Run UI Tests
         run: |
           xcodebuild test -project Wire-iOS.xcodeproj -scheme Wire-iOS -configuration Debug -derivedDataPath build
