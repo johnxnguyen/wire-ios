@@ -61,6 +61,7 @@ jobs:
           xcodebuild build -workspace wire-ios.xcworkspace -scheme WireSyncEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
           xcodebuild build -workspace wire-ios.xcworkspace -scheme Wire-iOS -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
           exit ${PIPESTATUS[0]}
+          xcodebuild build -project Wire-iOS.xcodeproj -scheme wire-ios -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
           
 
   testUI:  
