@@ -86,7 +86,7 @@ jobs:
         run: ./setup.sh
       - name: Build UI Tests
         run: |
-          xcodebuild build -project Wire-iOS.xcodeproj -scheme Wire-iOS -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' OBJROOT=$(PWD)/build SYMROOT=$(PWD)/build
+          xcodebuild build -project Wire-iOS.xcodeproj -scheme Wire-iOS -configuration Debug -derivedDataPath build
       - name: Run UI Tests
         run: |
           xcodebuild test -project Wire-iOS.xcodeproj -scheme Wire-iOS -configuration Debug -derivedDataPath build
