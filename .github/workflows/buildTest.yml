@@ -78,10 +78,6 @@ jobs:
         run: sudo xcode-select -switch /Applications/Xcode_13.1.app && /usr/bin/xcodebuild -version
       - name: Fetch derive path from job one
         run: echo ${{needs.build.outputs.derivePath}}
-      - name: Build UI Tests
-        run: |
-          xcodebuild build-for-testing -project Wire-iOS.xcodeproj -scheme Wire-iOS -configuration Debug -derivedDataPath build
-
       - name: Run UI Tests
         run: |
           xcodebuild test-without-building -project Wire-iOS.xcodeproj -scheme Wire-iOS -configuration Debug -derivedDataPath build
