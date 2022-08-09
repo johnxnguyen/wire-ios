@@ -111,11 +111,29 @@ jobs:
     - name: Fetch derive path from job one
       run: echo ${{needs.build.outputs.derivePath}}
       
-    - name: Run unit tests
+    - uses: actions/checkout@v1
+    - name: List available Xcode versions
+      run: ls /Applications | grep Xcode
+      
+    - name: Select Xcode
       run: |
-        #xcodebuild test -workspace wire-ios.xcworkspace -scheme WireSyncEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty && exit ${PIPESTATUS[0]}
-        xcodebuild test-without-building -xctestrun $(find . -type f -name "*.xctestrun") -destination "platform=iOS Simulator,name=$DEVICE" -derivedDataPath $DERIVED_DATA_PATH -enableCodeCoverage YES
-        
+          sudo xcode-select -switch /Applications/Xcode_13.1.app
+          /usr/bin/xcodebuild -version
+      #- name: Fetch derive path from job one
+      #  run: echo ${{needs.build.outputs.derivePath}}
+    - name: Fetch dependencies
+      env:
+          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: ./setup.sh
+    - name: Build UI Tests For Sync Engine
+      run: |
+          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireSyncEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+          
+    - name: Run UI Tests For Sync Engine
+      run: |
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireSyncEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+     
+     
   testDataModel:  
     needs: 
       - build
