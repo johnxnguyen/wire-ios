@@ -141,12 +141,350 @@ jobs:
 
     if: ${{ needs.changes.outputs.dataModel == 'true' }}
     runs-on: macos-latest
-          
+    
     steps:
     - name: Fetch derive path from job one
       run: echo ${{needs.build.outputs.derivePath}}
       
-    - name: Run unit tests
+    - uses: actions/checkout@v1
+    - name: List available Xcode versions
+      run: ls /Applications | grep Xcode
+      
+    - name: Select Xcode
       run: |
-        xcodebuild test -workspace wire-ios.xcworkspace -derivedDataPath ${{needs.build.outputs.derivePath}} -scheme WireDataModel -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty && exit ${PIPESTATUS[0]}
-  
+          sudo xcode-select -switch /Applications/Xcode_13.1.app
+          /usr/bin/xcodebuild -version
+      #- name: Fetch derive path from job one
+      #  run: echo ${{needs.build.outputs.derivePath}}
+    - name: Fetch dependencies
+      env:
+          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: ./setup.sh
+    - name: Build UI Tests For Sync Engine
+      run: |
+          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireDataModel -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+          
+    - name: Run UI Tests For Sync Engine
+      run: |
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireDataModel -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+
+  testWireRequestStrategy:  
+    needs: 
+      - build
+      - changes
+
+    if: ${{ needs.changes.outputs.dataModel == 'true' }}
+    runs-on: macos-latest
+    
+    steps:
+    - name: Fetch derive path from job one
+      run: echo ${{needs.build.outputs.derivePath}}
+      
+    - uses: actions/checkout@v1
+    - name: List available Xcode versions
+      run: ls /Applications | grep Xcode
+      
+    - name: Select Xcode
+      run: |
+          sudo xcode-select -switch /Applications/Xcode_13.1.app
+          /usr/bin/xcodebuild -version
+    - name: Fetch dependencies
+      env:
+          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: ./setup.sh
+    - name: Build UI Tests For Sync Engine
+      run: |
+          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireRequestStrategy -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+          
+    - name: Run UI Tests For Sync Engine
+      run: |
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireRequestStrategy -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+     
+  testWireSystem:  
+    needs: 
+      - build
+      - changes
+
+    if: ${{ needs.changes.outputs.dataModel == 'true' }}
+    runs-on: macos-latest
+    
+    steps:
+    - name: Fetch derive path from job one
+      run: echo ${{needs.build.outputs.derivePath}}
+      
+    - uses: actions/checkout@v1
+    - name: List available Xcode versions
+      run: ls /Applications | grep Xcode
+      
+    - name: Select Xcode
+      run: |
+          sudo xcode-select -switch /Applications/Xcode_13.1.app
+          /usr/bin/xcodebuild -version
+    - name: Fetch dependencies
+      env:
+          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: ./setup.sh
+    - name: Build UI Tests For Sync Engine
+      run: |
+          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireSystem -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+          
+    - name: Run UI Tests For Sync Engine
+      run: |
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireSystem -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+     
+  testWireTransport:
+    needs: 
+      - build
+      - changes
+
+    if: ${{ needs.changes.outputs.dataModel == 'true' }}
+    runs-on: macos-latest
+    
+    steps:
+    - name: Fetch derive path from job one
+      run: echo ${{needs.build.outputs.derivePath}}
+      
+    - uses: actions/checkout@v1
+    - name: List available Xcode versions
+      run: ls /Applications | grep Xcode
+      
+    - name: Select Xcode
+      run: |
+          sudo xcode-select -switch /Applications/Xcode_13.1.app
+          /usr/bin/xcodebuild -version
+    - name: Fetch dependencies
+      env:
+          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: ./setup.sh
+    - name: Build UI Tests For Sync Engine
+      run: |
+          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireTransport -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+          
+    - name: Run UI Tests For Sync Engine
+      run: |
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireTransport -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+     
+  testWireShareEngine:
+    needs: 
+      - build
+      - changes
+
+    if: ${{ needs.changes.outputs.dataModel == 'true' }}
+    runs-on: macos-latest
+    
+    steps:
+    - name: Fetch derive path from job one
+      run: echo ${{needs.build.outputs.derivePath}}
+      
+    - uses: actions/checkout@v1
+    - name: List available Xcode versions
+      run: ls /Applications | grep Xcode
+      
+    - name: Select Xcode
+      run: |
+          sudo xcode-select -switch /Applications/Xcode_13.1.app
+          /usr/bin/xcodebuild -version
+    - name: Fetch dependencies
+      env:
+          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: ./setup.sh
+    - name: Build UI Tests For Sync Engine
+      run: |
+          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireShareEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+          
+    - name: Run UI Tests For Sync Engine
+      run: |
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireShareEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+     
+  testWireCryptobox:
+    needs: 
+      - build
+      - changes
+
+    if: ${{ needs.changes.outputs.dataModel == 'true' }}
+    runs-on: macos-latest
+    
+    steps:
+    - name: Fetch derive path from job one
+      run: echo ${{needs.build.outputs.derivePath}}
+      
+    - uses: actions/checkout@v1
+    - name: List available Xcode versions
+      run: ls /Applications | grep Xcode
+      
+    - name: Select Xcode
+      run: |
+          sudo xcode-select -switch /Applications/Xcode_13.1.app
+          /usr/bin/xcodebuild -version
+    - name: Fetch dependencies
+      env:
+          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: ./setup.sh
+    - name: Build UI Tests For Sync Engine
+      run: |
+          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireCryptobox -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+          
+    - name: Run UI Tests For Sync Engine
+      run: |
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireCryptobox -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+     
+  testWireMockTransport:
+    needs: 
+      - build
+      - changes
+
+    if: ${{ needs.changes.outputs.dataModel == 'true' }}
+    runs-on: macos-latest
+    
+    steps:
+    - name: Fetch derive path from job one
+      run: echo ${{needs.build.outputs.derivePath}}
+      
+    - uses: actions/checkout@v1
+    - name: List available Xcode versions
+      run: ls /Applications | grep Xcode
+      
+    - name: Select Xcode
+      run: |
+          sudo xcode-select -switch /Applications/Xcode_13.1.app
+          /usr/bin/xcodebuild -version
+    - name: Fetch dependencies
+      env:
+          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: ./setup.sh
+    - name: Build UI Tests For Sync Engine
+      run: |
+          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireMockTransport -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+          
+    - name: Run UI Tests For Sync Engine
+      run: |
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireMockTransport -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+     
+  testWireNotificationEngine:
+    needs: 
+      - build
+      - changes
+
+    if: ${{ needs.changes.outputs.dataModel == 'true' }}
+    runs-on: macos-latest
+    
+    steps:
+    - name: Fetch derive path from job one
+      run: echo ${{needs.build.outputs.derivePath}}
+      
+    - uses: actions/checkout@v1
+    - name: List available Xcode versions
+      run: ls /Applications | grep Xcode
+      
+    - name: Select Xcode
+      run: |
+          sudo xcode-select -switch /Applications/Xcode_13.1.app
+          /usr/bin/xcodebuild -version
+    - name: Fetch dependencies
+      env:
+          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: ./setup.sh
+    - name: Build UI Tests For Sync Engine
+      run: |
+          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireNotificationEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+          
+    - name: Run UI Tests For Sync Engine
+      run: |
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireNotificationEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+     
+  testWireImages:
+    needs: 
+      - build
+      - changes
+
+    if: ${{ needs.changes.outputs.dataModel == 'true' }}
+    runs-on: macos-latest
+    
+    steps:
+    - name: Fetch derive path from job one
+      run: echo ${{needs.build.outputs.derivePath}}
+      
+    - uses: actions/checkout@v1
+    - name: List available Xcode versions
+      run: ls /Applications | grep Xcode
+      
+    - name: Select Xcode
+      run: |
+          sudo xcode-select -switch /Applications/Xcode_13.1.app
+          /usr/bin/xcodebuild -version
+    - name: Fetch dependencies
+      env:
+          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: ./setup.sh
+    - name: Build UI Tests For Sync Engine
+      run: |
+          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireImages -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+          
+    - name: Run UI Tests For Sync Engine
+      run: |
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireImages -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+     
+  testWireLinkPreview:
+    needs: 
+      - build
+      - changes
+
+    if: ${{ needs.changes.outputs.dataModel == 'true' }}
+    runs-on: macos-latest
+    
+    steps:
+    - name: Fetch derive path from job one
+      run: echo ${{needs.build.outputs.derivePath}}
+      
+    - uses: actions/checkout@v1
+    - name: List available Xcode versions
+      run: ls /Applications | grep Xcode
+      
+    - name: Select Xcode
+      run: |
+          sudo xcode-select -switch /Applications/Xcode_13.1.app
+          /usr/bin/xcodebuild -version
+    - name: Fetch dependencies
+      env:
+          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: ./setup.sh
+    - name: Build UI Tests For Sync Engine
+      run: |
+          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireLinkPreview -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+          
+    - name: Run UI Tests For Sync Engine
+      run: |
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireLinkPreview -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+     
+  testWireUtilities:
+    needs: 
+      - build
+      - changes
+
+    if: ${{ needs.changes.outputs.dataModel == 'true' }}
+    runs-on: macos-latest
+    
+    steps:
+    - name: Fetch derive path from job one
+      run: echo ${{needs.build.outputs.derivePath}}
+      
+    - uses: actions/checkout@v1
+    - name: List available Xcode versions
+      run: ls /Applications | grep Xcode
+      
+    - name: Select Xcode
+      run: |
+          sudo xcode-select -switch /Applications/Xcode_13.1.app
+          /usr/bin/xcodebuild -version
+    - name: Fetch dependencies
+      env:
+          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: ./setup.sh
+    - name: Build UI Tests For Sync Engine
+      run: |
+          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireUtilities -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+          
+    - name: Run UI Tests For Sync Engine
+      run: |
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireUtilities -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+     
