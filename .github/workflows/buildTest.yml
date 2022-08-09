@@ -89,7 +89,9 @@ jobs:
         run: ./setup.sh
       - name: Build UI Tests
         run: |
-          xcodebuild build -workspace wire-ios.xcworkspace -scheme Wire-iOS
+          #xcodebuild build -workspace wire-ios.xcworkspace -scheme Wire-iOS
+          xcodebuild build -workspace wire-ios.xcworkspace -scheme Wire-iOS -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+          
       - name: Run UI Tests
         run: |
           xcodebuild test -project Wire-iOS.xcodeproj -scheme Wire-iOS -configuration Debug -derivedDataPath build
