@@ -49,11 +49,11 @@ jobs:
             - 'wire-ios-cryptobox/**'
           mockTransport:
             - 'wire-ios-mock-transport/**'
-          notificationEngine
+          notificationEngine:
             - 'wire-ios-notification-engine/**'
-          wireImages
+          wireImages:
             - 'wire-ios-images/**'
-          utilities
+          utilities:
             - 'wire-ios-utilities/**'  
 
   build:
