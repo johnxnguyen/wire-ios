@@ -15,6 +15,15 @@ jobs:
       ui: ${{ steps.filter.outputs.ui }}
       syncEngine: ${{ steps.filter.outputs.syncEngine }}
       dataModel: ${{ steps.filter.outputs.dataModel }}
+      iosSystem: ${{ steps.filter.outputs.iosSystem }}
+      requestStrategy: ${{ steps.filter.outputs.requestStrategy }}
+      transport: ${{ steps.filter.outputs.transport }}
+      shareEngine: ${{ steps.filter.outputs.shareEngine }}
+      cryptobox: ${{ steps.filter.outputs.cryptobox }}
+      mockTransport: ${{ steps.filter.outputs.mockTransport }}
+      notificationEngine: ${{ steps.filter.outputs.notificationEngine }}
+      wireImages: ${{ steps.filter.outputs.wireImages }}
+      utilities: ${{ steps.filter.outputs.utilities }}
     steps:
     # For pull requests it's not necessary to checkout the code
     - uses: dorny/paths-filter@v2
