@@ -27,6 +27,24 @@ jobs:
             - 'wire-ios-sync-engine/**'
           dataModel:
             - 'wire-ios-data-model/**'
+          iosSystem:
+            - 'wire-ios-system/**'
+          requestStrategy:
+            - 'wire-ios-request-strategy/**'
+          transport:
+            - 'wire-ios-transport/**'
+          shareEngine:
+            - 'wire-ios-share-engine/**'
+          cryptobox:
+            - 'wire-ios-cryptobox/**'
+          mockTransport:
+            - 'wire-ios-mock-transport/**'
+          notificationEngine
+            - 'wire-ios-notification-engine/**'
+          wireImages
+            - 'wire-ios-images/**'
+          utilities
+            - 'wire-ios-utilities/**'  
 
   build:
     needs: changes
@@ -173,7 +191,7 @@ jobs:
       - build
       - changes
 
-    if: ${{ needs.changes.outputs.dataModel == 'true' }}
+    if: ${{ needs.changes.outputs.requestStrategy == 'true' }}
     runs-on: macos-latest
     
     steps:
@@ -205,7 +223,7 @@ jobs:
       - build
       - changes
 
-    if: ${{ needs.changes.outputs.dataModel == 'true' }}
+    if: ${{ needs.changes.outputs.iosSystem == 'true' }}
     runs-on: macos-latest
     
     steps:
@@ -237,7 +255,7 @@ jobs:
       - build
       - changes
 
-    if: ${{ needs.changes.outputs.dataModel == 'true' }}
+    if: ${{ needs.changes.outputs.transport == 'true' }}
     runs-on: macos-latest
     
     steps:
@@ -269,7 +287,7 @@ jobs:
       - build
       - changes
 
-    if: ${{ needs.changes.outputs.dataModel == 'true' }}
+    if: ${{ needs.changes.outputs.shareEngine == 'true' }}
     runs-on: macos-latest
     
     steps:
@@ -301,7 +319,7 @@ jobs:
       - build
       - changes
 
-    if: ${{ needs.changes.outputs.dataModel == 'true' }}
+    if: ${{ needs.changes.outputs.cryptobox == 'true' }}
     runs-on: macos-latest
     
     steps:
@@ -320,11 +338,11 @@ jobs:
       env:
           GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: ./setup.sh
-    - name: Build UI Tests For Sync Engine
+    - name: Build UI Tests For cryptobox
       run: |
           xcodebuild build -workspace wire-ios.xcworkspace -scheme WireCryptobox -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
           
-    - name: Run UI Tests For Sync Engine
+    - name: Run UI Tests For cryptobox
       run: |
           xcodebuild test -workspace wire-ios.xcworkspace -scheme WireCryptobox -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
      
@@ -333,7 +351,7 @@ jobs:
       - build
       - changes
 
-    if: ${{ needs.changes.outputs.dataModel == 'true' }}
+    if: ${{ needs.changes.outputs.mockTransport == 'true' }}
     runs-on: macos-latest
     
     steps:
@@ -352,11 +370,11 @@ jobs:
       env:
           GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: ./setup.sh
-    - name: Build UI Tests For Sync Engine
+    - name: Build UI Tests For mockTransport
       run: |
           xcodebuild build -workspace wire-ios.xcworkspace -scheme WireMockTransport -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
           
-    - name: Run UI Tests For Sync Engine
+    - name: Run UI Tests For mockTransport
       run: |
           xcodebuild test -workspace wire-ios.xcworkspace -scheme WireMockTransport -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
      
@@ -365,7 +383,7 @@ jobs:
       - build
       - changes
 
-    if: ${{ needs.changes.outputs.dataModel == 'true' }}
+    if: ${{ needs.changes.outputs.notificationEngine == 'true' }}
     runs-on: macos-latest
     
     steps:
@@ -384,11 +402,11 @@ jobs:
       env:
           GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: ./setup.sh
-    - name: Build UI Tests For Sync Engine
+    - name: Build UI Tests For notificationEngine
       run: |
           xcodebuild build -workspace wire-ios.xcworkspace -scheme WireNotificationEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
           
-    - name: Run UI Tests For Sync Engine
+    - name: Run UI Tests For notificationEngine
       run: |
           xcodebuild test -workspace wire-ios.xcworkspace -scheme WireNotificationEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
      
@@ -397,7 +415,7 @@ jobs:
       - build
       - changes
 
-    if: ${{ needs.changes.outputs.dataModel == 'true' }}
+    if: ${{ needs.changes.outputs.wireImages == 'true' }}
     runs-on: macos-latest
     
     steps:
@@ -416,11 +434,11 @@ jobs:
       env:
           GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: ./setup.sh
-    - name: Build UI Tests For Sync Engine
+    - name: Build UI Tests For wireImages
       run: |
           xcodebuild build -workspace wire-ios.xcworkspace -scheme WireImages -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
           
-    - name: Run UI Tests For Sync Engine
+    - name: Run UI Tests For wireImages
       run: |
           xcodebuild test -workspace wire-ios.xcworkspace -scheme WireImages -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
      
@@ -429,7 +447,7 @@ jobs:
       - build
       - changes
 
-    if: ${{ needs.changes.outputs.dataModel == 'true' }}
+    if: ${{ needs.changes.outputs.linkPreview == 'true' }}
     runs-on: macos-latest
     
     steps:
@@ -461,7 +479,7 @@ jobs:
       - build
       - changes
 
-    if: ${{ needs.changes.outputs.dataModel == 'true' }}
+    if: ${{ needs.changes.outputs.utilities == 'true' }}
     runs-on: macos-latest
     
     steps:
