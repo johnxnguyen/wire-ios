@@ -85,10 +85,21 @@ jobs:
 
       - name: Build
         run: |
+          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireSystem -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireUtilities -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireImages -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireLinkPreview -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireTransport -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireCryptobox -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireDataModel -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireMockTransport -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty      
+          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireRequestStrategy -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireShareEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty     
           xcodebuild build -workspace wire-ios.xcworkspace -scheme WireDataModel -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
           xcodebuild build -workspace wire-ios.xcworkspace -scheme WireSyncEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
           xcodebuild build -workspace wire-ios.xcworkspace -scheme Wire-iOS -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
           exit ${PIPESTATUS[0]}
+          
           xcodebuild build -project Wire-iOS.xcodeproj -scheme Wire-iOS 
           
 
@@ -114,12 +125,7 @@ jobs:
       - name: Fetch dependencies
         env:
           GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./setup.sh
-      - name: Build UI Tests
-        run: |
-          #xcodebuild build -workspace wire-ios.xcworkspace -scheme Wire-iOS
-          xcodebuild build -workspace wire-ios.xcworkspace -scheme Wire-iOS -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
-          
+        run: ./setup.sh    
       - name: Run UI Tests
         run: |
           #xcodebuild test -project Wire-iOS.xcodeproj -scheme Wire-iOS -configuration Debug -derivedDataPath build
