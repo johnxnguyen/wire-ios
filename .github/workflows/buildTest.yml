@@ -153,10 +153,6 @@ jobs:
       env:
           GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: ./setup.sh
-    - name: Build UI Tests For Sync Engine
-      run: |
-          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireSyncEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
-          
     - name: Run UI Tests For Sync Engine
       run: |
           xcodebuild test -workspace wire-ios.xcworkspace -scheme WireSyncEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
