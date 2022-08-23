@@ -144,6 +144,14 @@ jobs:
     steps:
     - name: Fetch derive path from job one
       run: echo ${{needs.build.outputs.derivePath}}
+    - uses: actions/checkout@v1
+    - name: List available Xcode versions
+      run: ls /Applications | grep Xcode
+      
+    - name: Select Xcode
+      run: |
+          sudo xcode-select -switch /Applications/Xcode_13.1.app
+          /usr/bin/xcodebuild -version
       
     - name: Run UI Tests For Sync Engine
       run: |
