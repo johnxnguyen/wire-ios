@@ -85,7 +85,7 @@ jobs:
 
       - name: Build
         run: |
-          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireSystem -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+          #xcodebuild build -workspace wire-ios.xcworkspace -scheme WireSystem -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
           xcodebuild build -workspace wire-ios.xcworkspace -scheme WireUtilities -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
           xcodebuild build -workspace wire-ios.xcworkspace -scheme WireImages -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
           xcodebuild build -workspace wire-ios.xcworkspace -scheme WireLinkPreview -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
