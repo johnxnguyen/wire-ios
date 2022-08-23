@@ -85,16 +85,6 @@ jobs:
 
       - name: Build
         run: |
-          #xcodebuild build -workspace wire-ios.xcworkspace -scheme WireSystem -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
-          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireUtilities -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
-          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireImages -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
-          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireLinkPreview -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
-          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireTransport -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
-          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireCryptobox -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
-          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireDataModel -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
-          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireMockTransport -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty      
-          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireRequestStrategy -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
-          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireShareEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty     
           xcodebuild build -workspace wire-ios.xcworkspace -scheme WireDataModel -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
           xcodebuild build -workspace wire-ios.xcworkspace -scheme WireSyncEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
           xcodebuild build -workspace wire-ios.xcworkspace -scheme Wire-iOS -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
@@ -120,15 +110,8 @@ jobs:
         run: |
           sudo xcode-select -switch /Applications/Xcode_13.1.app
           /usr/bin/xcodebuild -version
-      #- name: Fetch derive path from job one
-      #  run: echo ${{needs.build.outputs.derivePath}}
-      - name: Fetch dependencies
-        env:
-          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./setup.sh    
       - name: Run UI Tests
         run: |
-          #xcodebuild test -project Wire-iOS.xcodeproj -scheme Wire-iOS -configuration Debug -derivedDataPath build
           xcodebuild test -workspace wire-ios.xcworkspace -scheme Wire-iOS -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
           
       
@@ -178,12 +161,6 @@ jobs:
       run: |
           sudo xcode-select -switch /Applications/Xcode_13.1.app
           /usr/bin/xcodebuild -version
-      #- name: Fetch derive path from job one
-      #  run: echo ${{needs.build.outputs.derivePath}}
-    - name: Fetch dependencies
-      env:
-          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: ./setup.sh
     - name: Run UI Tests For WireDataModel
       run: |
           xcodebuild test -workspace wire-ios.xcworkspace -scheme WireDataModel -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
@@ -208,10 +185,7 @@ jobs:
       run: |
           sudo xcode-select -switch /Applications/Xcode_13.1.app
           /usr/bin/xcodebuild -version
-    - name: Fetch dependencies
-      env:
-          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: ./setup.sh
+    
     - name: Run UI Tests For WireRequestStrategy
       run: |
           xcodebuild test -workspace wire-ios.xcworkspace -scheme WireRequestStrategy -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
@@ -260,10 +234,6 @@ jobs:
       run: |
           sudo xcode-select -switch /Applications/Xcode_13.1.app
           /usr/bin/xcodebuild -version
-    - name: Fetch dependencies
-      env:
-          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: ./setup.sh
     - name: Run UI Tests For WireTransport
       run: |
           xcodebuild test -workspace wire-ios.xcworkspace -scheme WireTransport -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
@@ -288,10 +258,6 @@ jobs:
       run: |
           sudo xcode-select -switch /Applications/Xcode_13.1.app
           /usr/bin/xcodebuild -version
-    - name: Fetch dependencies
-      env:
-          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: ./setup.sh
     - name: Run UI Tests For WireShareEngine
       run: |
           xcodebuild test -workspace wire-ios.xcworkspace -scheme WireShareEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
@@ -316,10 +282,6 @@ jobs:
       run: |
           sudo xcode-select -switch /Applications/Xcode_13.1.app
           /usr/bin/xcodebuild -version
-    - name: Fetch dependencies
-      env:
-          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: ./setup.sh
     - name: Run UI Tests For WireCryptobox
       run: |
           xcodebuild test -workspace wire-ios.xcworkspace -scheme WireCryptobox -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
@@ -344,10 +306,6 @@ jobs:
       run: |
           sudo xcode-select -switch /Applications/Xcode_13.1.app
           /usr/bin/xcodebuild -version
-    - name: Fetch dependencies
-      env:
-          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: ./setup.sh
     - name: Run UI Tests For WireMockTransport
       run: |
           xcodebuild test -workspace wire-ios.xcworkspace -scheme WireMockTransport -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
@@ -372,10 +330,6 @@ jobs:
       run: |
           sudo xcode-select -switch /Applications/Xcode_13.1.app
           /usr/bin/xcodebuild -version
-    - name: Fetch dependencies
-      env:
-          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: ./setup.sh
     - name: Run UI Tests For WireNotificationEngine
       run: |
           xcodebuild test -workspace wire-ios.xcworkspace -scheme WireNotificationEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
@@ -400,10 +354,6 @@ jobs:
       run: |
           sudo xcode-select -switch /Applications/Xcode_13.1.app
           /usr/bin/xcodebuild -version
-    - name: Fetch dependencies
-      env:
-          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: ./setup.sh
     - name: Run UI Tests For WireImages
       run: |
           xcodebuild test -workspace wire-ios.xcworkspace -scheme WireImages -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
@@ -428,10 +378,6 @@ jobs:
       run: |
           sudo xcode-select -switch /Applications/Xcode_13.1.app
           /usr/bin/xcodebuild -version
-    - name: Fetch dependencies
-      env:
-          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: ./setup.sh
     - name: Run UI Tests For WireLinkPreview
       run: |
           xcodebuild test -workspace wire-ios.xcworkspace -scheme WireLinkPreview -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
@@ -456,10 +402,6 @@ jobs:
       run: |
           sudo xcode-select -switch /Applications/Xcode_13.1.app
           /usr/bin/xcodebuild -version
-    - name: Fetch dependencies
-      env:
-          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: ./setup.sh
     - name: Run UI Tests For WireUtilities
       run: |
           xcodebuild test -workspace wire-ios.xcworkspace -scheme WireUtilities -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
