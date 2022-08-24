@@ -63,12 +63,6 @@ jobs:
     needs: changes
     runs-on: macOS-latest
     
-    #outputs:
-    #  output1: ${{ steps.step1.outputs.test }}
-      
-    #outputs:
-    #    derivePath: 'ios/wire-ios/build'
-
     env:
       derivePath: 'ios/wire-ios/build'
       
@@ -91,16 +85,10 @@ jobs:
           xcodebuild build -workspace wire-ios.xcworkspace -scheme WireDataModel -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
           xcodebuild build -workspace wire-ios.xcworkspace -scheme WireSyncEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
           xcodebuild build -workspace wire-ios.xcworkspace -scheme Wire-iOS -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
-          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireCryptobox -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
-          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireTransport -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
-          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireLinkPreview -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
-          xcodebuild build -workspace wire-ios.xcworkspace -scheme PINCache -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
-          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireProtos -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
           exit ${PIPESTATUS[0]}
           
           xcodebuild build -project Wire-iOS.xcodeproj -scheme Wire-iOS 
-          
-
+                  
   testUI:  
     needs: 
       - build
@@ -127,7 +115,6 @@ jobs:
     needs: 
       - build
       - changes
-      - testWireMockTransport
 
     if: ${{ needs.changes.outputs.syncEngine == 'true' }}
     runs-on: macos-latest
@@ -154,10 +141,6 @@ jobs:
     needs: 
       - build
       - changes
-      - testWireLinkPreview
-      - testWireImages
-      - testWireTransport
-      - testWireCryptobox
 
     if: ${{ needs.changes.outputs.dataModel == 'true' }}
     runs-on: macos-latest
@@ -207,7 +190,6 @@ jobs:
     needs: 
       - build
       - changes
-      - testWireSystem
 
     if: ${{ needs.changes.outputs.wireTesting == 'true' }}
     runs-on: macos-latest
@@ -328,9 +310,7 @@ jobs:
     needs: 
       - build
       - changes
-      - testWireCryptobox
-      - testWireTransport
-
+    
     if: ${{ needs.changes.outputs.mockTransport == 'true' }}
     runs-on: macos-latest
     
@@ -378,10 +358,7 @@ jobs:
     needs: 
       - build
       - changes
-      - testWireTesting
-      - testWireSystem
-      - testWireUtilities
-
+     
     if: ${{ needs.changes.outputs.wireImages == 'true' }}
     runs-on: macos-latest
     
@@ -429,9 +406,7 @@ jobs:
     needs: 
       - build
       - changes
-      - testWireSystem
-      - testWireTesting
-
+     
     if: ${{ needs.changes.outputs.utilities == 'true' }}
     runs-on: macos-latest
     
