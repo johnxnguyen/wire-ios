@@ -24,6 +24,7 @@ jobs:
       notificationEngine: ${{ steps.filter.outputs.notificationEngine }}
       wireImages: ${{ steps.filter.outputs.wireImages }}
       utilities: ${{ steps.filter.outputs.utilities }}
+      wireTesting : ${{ steps.filter.outputs.utilities }}
       
     steps:
     # For pull requests it's not necessary to checkout the code
@@ -55,6 +56,8 @@ jobs:
             - 'wire-ios-images/**'
           utilities:
             - 'wire-ios-utilities/**'  
+          wireTesting:
+            - 'wire-ios-testing/**'  
 
   build:
     needs: changes
@@ -195,6 +198,31 @@ jobs:
       run: |
           xcodebuild test -workspace wire-ios.xcworkspace -scheme WireRequestStrategy -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
      
+  testWireTesting:  
+    needs: 
+      - build
+      - changes
+      - testWireSystem
+
+    if: ${{ needs.changes.outputs.wireTesting == 'true' }}
+    runs-on: macos-latest
+    
+    steps:
+    - name: Fetch derive path from job one
+      run: echo ${{needs.build.outputs.derivePath}}
+    - uses: actions/checkout@v1
+    - name: List available Xcode versions
+      run: ls /Applications | grep Xcode
+      
+    - name: Select Xcode
+      run: |
+          sudo xcode-select -switch /Applications/Xcode_13.1.app
+          /usr/bin/xcodebuild -version
+       
+    - name: Run UI Tests For WireSystem
+      run: |
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireTesting -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+
   testWireSystem:  
     needs: 
       - build
@@ -343,6 +371,9 @@ jobs:
     needs: 
       - build
       - changes
+      - testWireTesting
+      - testWireSystem
+      - testWireUtilities
 
     if: ${{ needs.changes.outputs.wireImages == 'true' }}
     runs-on: macos-latest
@@ -391,6 +422,8 @@ jobs:
     needs: 
       - build
       - changes
+      - testWireSystem
+      - testWireTesting
 
     if: ${{ needs.changes.outputs.utilities == 'true' }}
     runs-on: macos-latest
