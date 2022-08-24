@@ -127,6 +127,7 @@ jobs:
     needs: 
       - build
       - changes
+      - testWireMockTransport
 
     if: ${{ needs.changes.outputs.syncEngine == 'true' }}
     runs-on: macos-latest
@@ -327,6 +328,8 @@ jobs:
     needs: 
       - build
       - changes
+      - testWireCryptobox
+      - testWireTransport
 
     if: ${{ needs.changes.outputs.mockTransport == 'true' }}
     runs-on: macos-latest
