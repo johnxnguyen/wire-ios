@@ -153,6 +153,10 @@ jobs:
     needs: 
       - build
       - changes
+      - testWireLinkPreview
+      - testWireImages
+      - testWireTransport
+      - testWireCryptobox
 
     if: ${{ needs.changes.outputs.dataModel == 'true' }}
     runs-on: macos-latest
