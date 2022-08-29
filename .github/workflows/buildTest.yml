@@ -93,7 +93,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: Products
-          path: DerivedData
+          path: /Users/runner/Library/Developer/Xcode/DerivedData
            
   testUI:  
     needs: 
