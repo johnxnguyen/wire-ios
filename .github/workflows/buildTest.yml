@@ -63,8 +63,9 @@ jobs:
     needs: changes
     runs-on: macOS-latest
     
+      
     env:
-      derivePath: 'ios/wire-ios/build'
+      derivePath: "DerivedData"
       
     steps:
       - uses: actions/checkout@v3
@@ -86,16 +87,24 @@ jobs:
           xcodebuild build -workspace wire-ios.xcworkspace -scheme WireSyncEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
           xcodebuild build -workspace wire-ios.xcworkspace -scheme Wire-iOS -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
           exit ${PIPESTATUS[0]}
-          
           xcodebuild build -project Wire-iOS.xcodeproj -scheme Wire-iOS 
-                  
+          
+      - name: Upload products
+        uses: actions/upload-artifact@v1
+        with:
+          name: Products
+          path: DerivedData/Build/Products
+           
   testUI:  
     needs: 
       - build
       - changes
-
+      
     if: ${{ needs.changes.outputs.ui == 'true' }}
     runs-on: macos-latest
+      
+    env:
+      derivePath: "DerivedData"
     
     steps:
       - uses: actions/checkout@v1
@@ -106,9 +115,15 @@ jobs:
         run: |
           sudo xcode-select -switch /Applications/Xcode_13.1.app
           /usr/bin/xcodebuild -version
+      
+      - name: Download products
+        uses: actions/download-artifact@v1
+        with:
+          name: Products
+        
       - name: Run UI Tests
         run: |
-          xcodebuild test -workspace wire-ios.xcworkspace -scheme Wire-iOS -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme Wire-iOS -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
           
       
   testSyncEngine:  
@@ -119,6 +134,8 @@ jobs:
     if: ${{ needs.changes.outputs.syncEngine == 'true' }}
     runs-on: macos-latest
     
+    env:
+      derivePath: "DerivedData"
       
     steps:
     - name: Fetch derive path from job one
@@ -131,10 +148,15 @@ jobs:
       run: |
           sudo xcode-select -switch /Applications/Xcode_13.1.app
           /usr/bin/xcodebuild -version
-      
+
+    - name: Download products
+      uses: actions/download-artifact@v1
+      with:
+        name: Products
+        
     - name: Run UI Tests For Sync Engine
       run: |
-          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireSyncEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireSyncEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
      
      
   testDataModel:  
@@ -144,7 +166,8 @@ jobs:
 
     if: ${{ needs.changes.outputs.dataModel == 'true' }}
     runs-on: macos-latest
-    
+    env:
+      derivePath: "DerivedData"
     steps:
     - name: Fetch derive path from job one
       run: echo ${{needs.build.outputs.derivePath}}
@@ -157,9 +180,15 @@ jobs:
       run: |
           sudo xcode-select -switch /Applications/Xcode_13.1.app
           /usr/bin/xcodebuild -version
+          
+    - name: Download products
+      uses: actions/download-artifact@v1
+      with:
+        name: Products
+        
     - name: Run UI Tests For WireDataModel
       run: |
-          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireDataModel -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireDataModel -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
 
   testWireRequestStrategy:  
     needs: 
@@ -168,7 +197,8 @@ jobs:
 
     if: ${{ needs.changes.outputs.requestStrategy == 'true' }}
     runs-on: macos-latest
-    
+    env:
+      derivePath: "DerivedData"
     steps:
     - name: Fetch derive path from job one
       run: echo ${{needs.build.outputs.derivePath}}
@@ -182,9 +212,13 @@ jobs:
           sudo xcode-select -switch /Applications/Xcode_13.1.app
           /usr/bin/xcodebuild -version
     
+    - name: Download products
+      uses: actions/download-artifact@v1
+      with:
+        name: Products
     - name: Run UI Tests For WireRequestStrategy
       run: |
-          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireRequestStrategy -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireRequestStrategy -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
      
   testWireTesting:  
     needs: 
@@ -193,7 +227,8 @@ jobs:
 
     if: ${{ needs.changes.outputs.wireTesting == 'true' }}
     runs-on: macos-latest
-    
+    env:
+      derivePath: "DerivedData"
     steps:
     - name: Fetch derive path from job one
       run: echo ${{needs.build.outputs.derivePath}}
@@ -205,10 +240,13 @@ jobs:
       run: |
           sudo xcode-select -switch /Applications/Xcode_13.1.app
           /usr/bin/xcodebuild -version
-       
+    - name: Download products
+      uses: actions/download-artifact@v1
+      with:
+        name: Products   
     - name: Run UI Tests For WireSystem
       run: |
-          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireTesting -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireTesting -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
 
   testWireSystem:  
     needs: 
@@ -217,7 +255,8 @@ jobs:
 
     if: ${{ needs.changes.outputs.iosSystem == 'true' }}
     runs-on: macos-latest
-    
+    env:
+      derivePath: "DerivedData"
     steps:
     - name: Fetch derive path from job one
       run: echo ${{needs.build.outputs.derivePath}}
@@ -229,10 +268,13 @@ jobs:
       run: |
           sudo xcode-select -switch /Applications/Xcode_13.1.app
           /usr/bin/xcodebuild -version
-       
+    - name: Download products
+      uses: actions/download-artifact@v1
+      with:
+        name: Products   
     - name: Run UI Tests For WireSystem
       run: |
-          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireSystem -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireSystem -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
      
   testWireTransport:
     needs: 
@@ -241,7 +283,8 @@ jobs:
 
     if: ${{ needs.changes.outputs.transport == 'true' }}
     runs-on: macos-latest
-    
+    env:
+      derivePath: "DerivedData"
     steps:
     - name: Fetch derive path from job one
       run: echo ${{needs.build.outputs.derivePath}}
@@ -254,9 +297,13 @@ jobs:
       run: |
           sudo xcode-select -switch /Applications/Xcode_13.1.app
           /usr/bin/xcodebuild -version
+    - name: Download products
+      uses: actions/download-artifact@v1
+      with:
+        name: Products      
     - name: Run UI Tests For WireTransport
       run: |
-          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireTransport -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireTransport -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
      
   testWireShareEngine:
     needs: 
@@ -265,7 +312,8 @@ jobs:
 
     if: ${{ needs.changes.outputs.shareEngine == 'true' }}
     runs-on: macos-latest
-    
+    env:
+      derivePath: "DerivedData"
     steps:
     - name: Fetch derive path from job one
       run: echo ${{needs.build.outputs.derivePath}}
@@ -278,9 +326,13 @@ jobs:
       run: |
           sudo xcode-select -switch /Applications/Xcode_13.1.app
           /usr/bin/xcodebuild -version
+    - name: Download products
+      uses: actions/download-artifact@v1
+      with:
+        name: Products      
     - name: Run UI Tests For WireShareEngine
       run: |
-          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireShareEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireShareEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
      
   testWireCryptobox:
     needs: 
@@ -289,7 +341,8 @@ jobs:
 
     if: ${{ needs.changes.outputs.cryptobox == 'true' }}
     runs-on: macos-latest
-    
+    env:
+      derivePath: "DerivedData"
     steps:
     - name: Fetch derive path from job one
       run: echo ${{needs.build.outputs.derivePath}}
@@ -302,9 +355,13 @@ jobs:
       run: |
           sudo xcode-select -switch /Applications/Xcode_13.1.app
           /usr/bin/xcodebuild -version
+    - name: Download products
+      uses: actions/download-artifact@v1
+      with:
+        name: Products      
     - name: Run UI Tests For WireCryptobox
       run: |
-          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireCryptobox -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireCryptobox -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
      
   testWireMockTransport:
     needs: 
@@ -313,7 +370,8 @@ jobs:
     
     if: ${{ needs.changes.outputs.mockTransport == 'true' }}
     runs-on: macos-latest
-    
+    env:
+      derivePath: "DerivedData"
     steps:
     - name: Fetch derive path from job one
       run: echo ${{needs.build.outputs.derivePath}}
@@ -326,9 +384,13 @@ jobs:
       run: |
           sudo xcode-select -switch /Applications/Xcode_13.1.app
           /usr/bin/xcodebuild -version
+    - name: Download products
+      uses: actions/download-artifact@v1
+      with:
+        name: Products      
     - name: Run UI Tests For WireMockTransport
       run: |
-          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireMockTransport -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireMockTransport -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
      
   testWireNotificationEngine:
     needs: 
@@ -337,7 +399,8 @@ jobs:
 
     if: ${{ needs.changes.outputs.notificationEngine == 'true' }}
     runs-on: macos-latest
-    
+    env:
+      derivePath: "DerivedData"
     steps:
     - name: Fetch derive path from job one
       run: echo ${{needs.build.outputs.derivePath}}
@@ -350,9 +413,13 @@ jobs:
       run: |
           sudo xcode-select -switch /Applications/Xcode_13.1.app
           /usr/bin/xcodebuild -version
+    - name: Download products
+      uses: actions/download-artifact@v1
+      with:
+        name: Products            
     - name: Run UI Tests For WireNotificationEngine
       run: |
-          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireNotificationEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireNotificationEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
      
   testWireImages:
     needs: 
@@ -361,7 +428,8 @@ jobs:
      
     if: ${{ needs.changes.outputs.wireImages == 'true' }}
     runs-on: macos-latest
-    
+    env:
+      derivePath: "DerivedData"
     steps:
     - name: Fetch derive path from job one
       run: echo ${{needs.build.outputs.derivePath}}
@@ -374,9 +442,14 @@ jobs:
       run: |
           sudo xcode-select -switch /Applications/Xcode_13.1.app
           /usr/bin/xcodebuild -version
+    - name: Download products
+      uses: actions/download-artifact@v1
+      with:
+        name: Products            
+
     - name: Run UI Tests For WireImages
       run: |
-          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireImages -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireImages -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0'  -derivedDataPath $derivePath | xcpretty
      
   testWireLinkPreview:
     needs: 
@@ -385,7 +458,8 @@ jobs:
 
     if: ${{ needs.changes.outputs.linkPreview == 'true' }}
     runs-on: macos-latest
-    
+    env:
+      derivePath: "DerivedData"
     steps:
     - name: Fetch derive path from job one
       run: echo ${{needs.build.outputs.derivePath}}
@@ -398,9 +472,15 @@ jobs:
       run: |
           sudo xcode-select -switch /Applications/Xcode_13.1.app
           /usr/bin/xcodebuild -version
+          
+    - name: Download products
+      uses: actions/download-artifact@v1
+      with:
+        name: Products            
+
     - name: Run UI Tests For WireLinkPreview
       run: |
-          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireLinkPreview -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireLinkPreview -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
      
   testWireUtilities:
     needs: 
@@ -409,7 +489,8 @@ jobs:
      
     if: ${{ needs.changes.outputs.utilities == 'true' }}
     runs-on: macos-latest
-    
+    env:
+      derivePath: "DerivedData"
     steps:
     - name: Fetch derive path from job one
       run: echo ${{needs.build.outputs.derivePath}}
@@ -422,7 +503,12 @@ jobs:
       run: |
           sudo xcode-select -switch /Applications/Xcode_13.1.app
           /usr/bin/xcodebuild -version
+    - name: Download products
+      uses: actions/download-artifact@v1
+      with:
+        name: Products            
+
     - name: Run UI Tests For WireUtilities
       run: |
-          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireUtilities -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireUtilities -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
      
