@@ -61,11 +61,10 @@ jobs:
 
   build:
     needs: changes
-    runs-on: macOS-latest
-    
-      
     env:
       derivePath: "DerivedData"
+    
+    runs-on: macOS-latest
       
     steps:
       - uses: actions/checkout@v3
@@ -101,11 +100,11 @@ jobs:
       - changes
       
     if: ${{ needs.changes.outputs.ui == 'true' }}
-    runs-on: macos-latest
-      
     env:
       derivePath: "DerivedData"
     
+    runs-on: macos-latest
+  
     steps:
       - uses: actions/checkout@v1
       - name: List available Xcode versions
@@ -132,10 +131,10 @@ jobs:
       - changes
 
     if: ${{ needs.changes.outputs.syncEngine == 'true' }}
-    runs-on: macos-latest
-    
     env:
       derivePath: "DerivedData"
+    
+    runs-on: macos-latest
       
     steps:
     - name: Fetch derive path from job one
@@ -165,9 +164,10 @@ jobs:
       - changes
 
     if: ${{ needs.changes.outputs.dataModel == 'true' }}
-    runs-on: macos-latest
     env:
       derivePath: "DerivedData"
+    
+    runs-on: macos-latest
     steps:
     - name: Fetch derive path from job one
       run: echo ${{needs.build.outputs.derivePath}}
@@ -196,9 +196,10 @@ jobs:
       - changes
 
     if: ${{ needs.changes.outputs.requestStrategy == 'true' }}
-    runs-on: macos-latest
     env:
       derivePath: "DerivedData"
+    
+    runs-on: macos-latest
     steps:
     - name: Fetch derive path from job one
       run: echo ${{needs.build.outputs.derivePath}}
@@ -226,9 +227,10 @@ jobs:
       - changes
 
     if: ${{ needs.changes.outputs.wireTesting == 'true' }}
-    runs-on: macos-latest
     env:
       derivePath: "DerivedData"
+    
+    runs-on: macos-latest
     steps:
     - name: Fetch derive path from job one
       run: echo ${{needs.build.outputs.derivePath}}
@@ -254,9 +256,10 @@ jobs:
       - changes
 
     if: ${{ needs.changes.outputs.iosSystem == 'true' }}
-    runs-on: macos-latest
     env:
       derivePath: "DerivedData"
+    
+    runs-on: macos-latest
     steps:
     - name: Fetch derive path from job one
       run: echo ${{needs.build.outputs.derivePath}}
@@ -282,9 +285,10 @@ jobs:
       - changes
 
     if: ${{ needs.changes.outputs.transport == 'true' }}
-    runs-on: macos-latest
     env:
       derivePath: "DerivedData"
+    
+    runs-on: macos-latest
     steps:
     - name: Fetch derive path from job one
       run: echo ${{needs.build.outputs.derivePath}}
@@ -311,9 +315,10 @@ jobs:
       - changes
 
     if: ${{ needs.changes.outputs.shareEngine == 'true' }}
-    runs-on: macos-latest
     env:
       derivePath: "DerivedData"
+    
+    runs-on: macos-latest
     steps:
     - name: Fetch derive path from job one
       run: echo ${{needs.build.outputs.derivePath}}
@@ -340,9 +345,9 @@ jobs:
       - changes
 
     if: ${{ needs.changes.outputs.cryptobox == 'true' }}
-    runs-on: macos-latest
     env:
       derivePath: "DerivedData"
+    runs-on: macos-latest
     steps:
     - name: Fetch derive path from job one
       run: echo ${{needs.build.outputs.derivePath}}
@@ -369,9 +374,9 @@ jobs:
       - changes
     
     if: ${{ needs.changes.outputs.mockTransport == 'true' }}
-    runs-on: macos-latest
     env:
       derivePath: "DerivedData"
+    runs-on: macos-latest
     steps:
     - name: Fetch derive path from job one
       run: echo ${{needs.build.outputs.derivePath}}
@@ -398,9 +403,9 @@ jobs:
       - changes
 
     if: ${{ needs.changes.outputs.notificationEngine == 'true' }}
-    runs-on: macos-latest
     env:
       derivePath: "DerivedData"
+    runs-on: macos-latest
     steps:
     - name: Fetch derive path from job one
       run: echo ${{needs.build.outputs.derivePath}}
@@ -427,9 +432,9 @@ jobs:
       - changes
      
     if: ${{ needs.changes.outputs.wireImages == 'true' }}
-    runs-on: macos-latest
     env:
       derivePath: "DerivedData"
+    runs-on: macos-latest
     steps:
     - name: Fetch derive path from job one
       run: echo ${{needs.build.outputs.derivePath}}
@@ -457,9 +462,9 @@ jobs:
       - changes
 
     if: ${{ needs.changes.outputs.linkPreview == 'true' }}
-    runs-on: macos-latest
     env:
       derivePath: "DerivedData"
+    runs-on: macos-latest
     steps:
     - name: Fetch derive path from job one
       run: echo ${{needs.build.outputs.derivePath}}
@@ -488,9 +493,9 @@ jobs:
       - changes
      
     if: ${{ needs.changes.outputs.utilities == 'true' }}
-    runs-on: macos-latest
     env:
       derivePath: "DerivedData"
+    runs-on: macos-latest
     steps:
     - name: Fetch derive path from job one
       run: echo ${{needs.build.outputs.derivePath}}
