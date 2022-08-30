@@ -87,7 +87,7 @@ jobs:
           xcodebuild build -workspace wire-ios.xcworkspace -scheme WireSyncEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
           xcodebuild build -workspace wire-ios.xcworkspace -scheme Wire-iOS -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
           exit ${PIPESTATUS[0]}
-          xcodebuild build -project Wire-iOS.xcodeproj -scheme Wire-iOS 
+          #xcodebuild build -project Wire-iOS.xcodeproj -scheme Wire-iOS 
           
       - name: Upload products
         uses: actions/upload-artifact@v1
