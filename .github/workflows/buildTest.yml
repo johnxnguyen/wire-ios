@@ -157,6 +157,11 @@ jobs:
       uses: actions/download-artifact@v1
       with:
         name: Products
+    
+    - name: Fetch dependencies
+      env:
+        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./setup.sh
         
     - name: Run UI Tests For Sync Engine
       run: |
@@ -190,7 +195,11 @@ jobs:
       uses: actions/download-artifact@v1
       with:
         name: Products
-        
+    
+    - name: Fetch dependencies
+      env:
+        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./setup.sh
     - name: Run UI Tests For WireDataModel
       run: |
           xcodebuild test -workspace wire-ios.xcworkspace -scheme WireDataModel -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
@@ -222,6 +231,10 @@ jobs:
       uses: actions/download-artifact@v1
       with:
         name: Products
+    - name: Fetch dependencies
+      env:
+        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./setup.sh
     - name: Run UI Tests For WireRequestStrategy
       run: |
           xcodebuild test -workspace wire-ios.xcworkspace -scheme WireRequestStrategy -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
@@ -250,7 +263,11 @@ jobs:
     - name: Download products
       uses: actions/download-artifact@v1
       with:
-        name: Products   
+        name: Products
+    - name: Fetch dependencies
+      env:
+        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./setup.sh
     - name: Run UI Tests For WireSystem
       run: |
           xcodebuild test -workspace wire-ios.xcworkspace -scheme WireTesting -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
@@ -279,7 +296,11 @@ jobs:
     - name: Download products
       uses: actions/download-artifact@v1
       with:
-        name: Products   
+        name: Products
+    - name: Fetch dependencies
+      env:
+        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./setup.sh
     - name: Run UI Tests For WireSystem
       run: |
           xcodebuild test -workspace wire-ios.xcworkspace -scheme WireSystem -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
@@ -309,7 +330,11 @@ jobs:
     - name: Download products
       uses: actions/download-artifact@v1
       with:
-        name: Products      
+        name: Products
+    - name: Fetch dependencies
+      env:
+        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./setup.sh
     - name: Run UI Tests For WireTransport
       run: |
           xcodebuild test -workspace wire-ios.xcworkspace -scheme WireTransport -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
@@ -339,7 +364,11 @@ jobs:
     - name: Download products
       uses: actions/download-artifact@v1
       with:
-        name: Products      
+        name: Products
+    - name: Fetch dependencies
+      env:
+        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./setup.sh
     - name: Run UI Tests For WireShareEngine
       run: |
           xcodebuild test -workspace wire-ios.xcworkspace -scheme WireShareEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
@@ -368,7 +397,11 @@ jobs:
     - name: Download products
       uses: actions/download-artifact@v1
       with:
-        name: Products      
+        name: Products
+    - name: Fetch dependencies
+      env:
+        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./setup.sh
     - name: Run UI Tests For WireCryptobox
       run: |
           xcodebuild test -workspace wire-ios.xcworkspace -scheme WireCryptobox -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
@@ -397,7 +430,11 @@ jobs:
     - name: Download products
       uses: actions/download-artifact@v1
       with:
-        name: Products      
+        name: Products
+    - name: Fetch dependencies
+      env:
+        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./setup.sh
     - name: Run UI Tests For WireMockTransport
       run: |
           xcodebuild test -workspace wire-ios.xcworkspace -scheme WireMockTransport -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
@@ -426,7 +463,11 @@ jobs:
     - name: Download products
       uses: actions/download-artifact@v1
       with:
-        name: Products            
+        name: Products
+    - name: Fetch dependencies
+      env:
+        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./setup.sh
     - name: Run UI Tests For WireNotificationEngine
       run: |
           xcodebuild test -workspace wire-ios.xcworkspace -scheme WireNotificationEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
@@ -456,7 +497,10 @@ jobs:
       uses: actions/download-artifact@v1
       with:
         name: Products            
-
+    - name: Fetch dependencies
+      env:
+        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./setup.sh
     - name: Run UI Tests For WireImages
       run: |
           xcodebuild test -workspace wire-ios.xcworkspace -scheme WireImages -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0'  -derivedDataPath $derivePath | xcpretty
@@ -486,7 +530,11 @@ jobs:
     - name: Download products
       uses: actions/download-artifact@v1
       with:
-        name: Products            
+        name: Products
+    - name: Fetch dependencies
+      env:
+        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./setup.sh
 
     - name: Run UI Tests For WireLinkPreview
       run: |
@@ -516,7 +564,11 @@ jobs:
     - name: Download products
       uses: actions/download-artifact@v1
       with:
-        name: Products            
+        name: Products
+    - name: Fetch dependencies
+      env:
+        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./setup.sh
 
     - name: Run UI Tests For WireUtilities
       run: |
