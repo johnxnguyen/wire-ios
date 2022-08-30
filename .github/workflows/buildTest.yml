@@ -123,9 +123,7 @@ jobs:
       - name: Fetch dependencies
         env:
           GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          cd wire-ios
-          ./setup.sh
+        run: ./setup.sh
         
       - name: Run UI Tests
         run: |
