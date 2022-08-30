@@ -119,6 +119,13 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: Products
+          
+      - name: Fetch dependencies
+        env:
+          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd wire-ios
+          ./setup.sh
         
       - name: Run UI Tests
         run: |
