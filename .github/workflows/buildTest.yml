@@ -82,7 +82,6 @@ jobs:
 
       - name: Build
         run: |
-          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireTesting -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
           xcodebuild build -workspace wire-ios.xcworkspace -scheme WireDataModel -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
           xcodebuild build -workspace wire-ios.xcworkspace -scheme WireSyncEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
           xcodebuild build -workspace wire-ios.xcworkspace -scheme Wire-iOS -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
@@ -162,9 +161,13 @@ jobs:
       uses: actions/download-artifact@v1
       with:
         name: Products
-    
+    - name: Run Wire testing For Sync Engine
+      run: |
+        xcodebuild build -workspace wire-ios.xcworkspace -scheme WireTesting -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
+          
     - name: Run UI Tests For Sync Engine
       run: |
+      
           xcodebuild test -workspace wire-ios.xcworkspace -scheme WireSyncEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
      
      
