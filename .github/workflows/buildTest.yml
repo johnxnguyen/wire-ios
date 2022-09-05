@@ -161,7 +161,7 @@ jobs:
       uses: actions/download-artifact@v1
       with:
         name: Products
-    - name: Run Wire testing For Sync Engine
+    - name: Build Wire testing For Sync Engine
       run: |
         xcodebuild build -workspace wire-ios.xcworkspace -scheme WireTesting -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
           
@@ -239,6 +239,10 @@ jobs:
       with:
         name: Products
     
+    - name: Build Wire testing For Sync Engine
+      run: |
+        xcodebuild build -workspace wire-ios.xcworkspace -scheme WireTesting -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
+
     - name: Run UI Tests For WireRequestStrategy
       run: |
           xcodebuild test -workspace wire-ios.xcworkspace -scheme WireRequestStrategy -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
@@ -479,6 +483,10 @@ jobs:
       with:
         name: Products
     
+    - name: Build Wire testing For Sync Engine
+      run: |
+        xcodebuild build -workspace wire-ios.xcworkspace -scheme WireTesting -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
+
     - name: Run UI Tests For WireNotificationEngine
       run: |
           xcodebuild test -workspace wire-ios.xcworkspace -scheme WireNotificationEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
@@ -512,7 +520,11 @@ jobs:
       uses: actions/download-artifact@v1
       with:
         name: Products            
-    
+   
+    - name: Build Wire testing For Sync Engine
+      run: |
+        xcodebuild build -workspace wire-ios.xcworkspace -scheme WireTesting -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
+ 
     - name: Run UI Tests For WireImages
       run: |
           xcodebuild test -workspace wire-ios.xcworkspace -scheme WireImages -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0'  -derivedDataPath $derivePath | xcpretty
