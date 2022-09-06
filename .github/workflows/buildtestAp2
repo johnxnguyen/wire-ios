@@ -1,0 +1,109 @@
+name: buildTest
+
+on:
+  pull_request:
+    branches: [ "develop" ]
+    paths: 
+      - 'wire-ios/**'
+      
+jobs:
+  # JOB to run change detection
+  changes:
+    runs-on: ubuntu-latest
+    # Set job outputs to values from filter step
+    outputs:
+      ui: ${{ steps.filter.outputs.ui }}
+      syncEngine: ${{ steps.filter.outputs.syncEngine }}
+      dataModel: ${{ steps.filter.outputs.dataModel }}
+      iosSystem: ${{ steps.filter.outputs.iosSystem }}
+      requestStrategy: ${{ steps.filter.outputs.requestStrategy }}
+      transport: ${{ steps.filter.outputs.transport }}
+      shareEngine: ${{ steps.filter.outputs.shareEngine }}
+      cryptobox: ${{ steps.filter.outputs.cryptobox }}
+      mockTransport: ${{ steps.filter.outputs.mockTransport }}
+      notificationEngine: ${{ steps.filter.outputs.notificationEngine }}
+      wireImages: ${{ steps.filter.outputs.wireImages }}
+      utilities: ${{ steps.filter.outputs.utilities }}
+      wireTesting : ${{ steps.filter.outputs.utilities }}
+      
+    steps:
+    # For pull requests it's not necessary to checkout the code
+    - uses: dorny/paths-filter@v2
+      id: filter
+      with:
+        filters: |
+          ui:
+            - 'wire-ios/**'
+          syncEngine:
+            - 'wire-ios-sync-engine/**'
+          dataModel:
+            - 'wire-ios-data-model/**'
+          iosSystem:
+            - 'wire-ios-system/**'
+          requestStrategy:
+            - 'wire-ios-request-strategy/**'
+          transport:
+            - 'wire-ios-transport/**'
+          shareEngine:
+            - 'wire-ios-share-engine/**'
+          cryptobox:
+            - 'wire-ios-cryptobox/**'
+          mockTransport:
+            - 'wire-ios-mock-transport/**'
+          notificationEngine:
+            - 'wire-ios-notification-engine/**'
+          wireImages:
+            - 'wire-ios-images/**'
+          utilities:
+            - 'wire-ios-utilities/**'  
+          wireTesting:
+            - 'wire-ios-testing/**'  
+  buildAndTest:
+    needs: changes
+    env:
+      derivePath: "DerivedData"
+    
+    runs-on: macOS-latest
+      
+    steps:
+      - uses: actions/checkout@v3
+      - name: List available Xcode versions
+        run: ls /Applications | grep Xcode
+      
+      - name: Select Xcode
+        run: |
+          sudo xcode-select -switch /Applications/Xcode_13.1.app
+          /usr/bin/xcodebuild -version
+      - name: Fetch dependencies
+        env:
+          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./setup.sh
+
+      if: ${{ needs.changes.outputs.ui == 'true' }}
+      - name: Build
+        run: |
+          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireDataModel -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
+          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireSyncEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
+          xcodebuild build -workspace wire-ios.xcworkspace -scheme Wire-iOS -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
+          exit ${PIPESTATUS[0]}
+      if: ${{ needs.changes.outputs.syncEngine == 'true' }}
+      - name: Run UI Tests For Sync Engine
+        run: |
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireSyncEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
+     if: ${{ needs.changes.outputs.dataModel == 'true' }}
+     - name: Run UI Tests For WireDataModel
+      run: |
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireDataModel -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
+     if: ${{ needs.changes.outputs.iosSystem == 'true' }}
+     - name: Run UI Tests For WireSystem
+      run: |
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireSystem -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
+     if: ${{ needs.changes.outputs.notificationEngine == 'true' }}
+     - name: Run UI Tests For WireNotificationEngine
+      run: |
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireNotificationEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
+     if: ${{ needs.changes.outputs.wireImages == 'true' }}     
+     - name: Run UI Tests For WireImages
+      run: |
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireImages -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0'  -derivedDataPath $derivePath | xcpretty
+      
