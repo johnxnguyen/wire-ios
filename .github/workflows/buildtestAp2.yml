@@ -80,8 +80,8 @@ jobs:
         run: ./setup.sh
       - name: Any chnages in UI project ?
         if: ${{ needs.changes.outputs.ui == 'true' }}
-      - name: Yes, changes are there..
         run: |
+          echo "Yes, changes are there.." |
           xcodebuild build -workspace wire-ios.xcworkspace -scheme WireDataModel -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
           xcodebuild build -workspace wire-ios.xcworkspace -scheme WireSyncEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
           xcodebuild build -workspace wire-ios.xcworkspace -scheme Wire-iOS -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
@@ -89,61 +89,61 @@ jobs:
       
       - name: Any changes in WireSyncEngine project ?
         if: ${{ needs.changes.outputs.syncEngine == 'true' }}
-      - name: Yes, changes are there..
         run: |
+          echo "Yes, changes are there.." |
           xcodebuild test -workspace wire-ios.xcworkspace -scheme WireSyncEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
   
       - name: Any changes in WireDataModel project ?
         if: ${{ needs.changes.outputs.dataModel == 'true' }}
-      - name: Yes, changes are there..
         run: |
+          echo "Yes, changes are there.." |
           xcodebuild test -workspace wire-ios.xcworkspace -scheme WireDataModel -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
 
       - name: Any changes in WireSystem project ?
         if: ${{ needs.changes.outputs.iosSystem == 'true' }}
-      - name: Yes, changes are there..
         run: |
+          echo "Yes, changes are there.." |
           xcodebuild test -workspace wire-ios.xcworkspace -scheme WireSystem -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
      
       - name: Any changes in WireNotificationEngine project ?
         if: ${{ needs.changes.outputs.notificationEngine == 'true' }}
-      - name: Yes, changes are there..
         run: |
+          echo "Yes, changes are there.." |
           xcodebuild test -workspace wire-ios.xcworkspace -scheme WireNotificationEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
           
       - name: Any changes in WireImages project ?
         if: ${{ needs.changes.outputs.wireImages == 'true' }}
-      - name: Yes, changes are there..
         run: |
+          echo "Yes, changes are there.." |
           xcodebuild test -workspace wire-ios.xcworkspace -scheme WireImages -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0'  -derivedDataPath $derivePath | xcpretty
       
       - name: Any changes in WireRequestStrategy project ?
         if: ${{ needs.changes.outputs.requestStrategy == 'true' }}
-      - name: Yes, changes are there..
         run: |
+          echo "Yes, changes are there.." |
           xcodebuild test -workspace wire-ios.xcworkspace -scheme WireRequestStrategy -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0'  -derivedDataPath $derivePath | xcpretty
       
       - name: Any changes in WireTesting project ?
         if: ${{ needs.changes.outputs.wireTesting == 'true' }}
-      - name: Yes, changes are there..
         run: |
+          echo "Yes, changes are there.." |
           xcodebuild test -workspace wire-ios.xcworkspace -scheme WireTesting -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0'  -derivedDataPath $derivePath | xcpretty
       
       - name: Any changes in WireTransport project ?
         if: ${{ needs.changes.outputs.transport == 'true' }}
-      - name: Yes, changes are there..
         run: |
+          echo "Yes, changes are there.." |
           xcodebuild test -workspace wire-ios.xcworkspace -scheme WireTransport -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0'  -derivedDataPath $derivePath | xcpretty
       
       - name: Any changes in WireShareEngine project ?
         if: ${{ needs.changes.outputs.shareEngine == 'true' }}
-      - name: Yes, changes are there..
         run: |
+          echo "Yes, changes are there.." |
           xcodebuild test -workspace wire-ios.xcworkspace -scheme WireShareEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0'  -derivedDataPath $derivePath | xcpretty
       
       - name: Any changes in WireCryptobox project ?
         if: ${{ needs.changes.outputs.cryptobox == 'true' }}
-      - name: Yes, changes are there..
         run: |
+          echo "Yes, changes are there.." |
           xcodebuild test -workspace wire-ios.xcworkspace -scheme WireCryptobox -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0'  -derivedDataPath $derivePath | xcpretty
       
