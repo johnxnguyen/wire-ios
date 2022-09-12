@@ -58,6 +58,7 @@ jobs:
             - 'wire-ios-utilities/**'  
           wireTesting:
             - 'wire-ios-testing/**'  
+            
   buildAndTest:
     needs: changes
     env:
