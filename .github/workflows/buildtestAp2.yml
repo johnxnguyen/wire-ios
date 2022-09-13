@@ -159,10 +159,6 @@ jobs:
         if: ${{ needs.changes.outputs.images == 'true' }}
         run: |
           echo "WireImages has changes" |
-          echo "Fetching dependencies for WireImages..." |
-          cd wire-ios-images |
-          carthage bootstrap --platform ios --use-xcframeworks |
-          cd .. |
           echo "Building WireImages..." |
           xcodebuild build -workspace wire-ios.xcworkspace -scheme WireImages -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
           echo "Testing WireImages..." |
