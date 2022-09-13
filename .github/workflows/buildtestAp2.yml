@@ -3,8 +3,6 @@ name: buildtestAp2
 on:
   pull_request:
     branches: [ "develop" ]
-    paths: 
-      - 'wire-ios/**'
       
 jobs:
   # JOB to run change detection
