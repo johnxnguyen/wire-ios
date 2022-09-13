@@ -217,6 +217,10 @@ jobs:
         if: ${{ needs.changes.outputs.notificationEngine == 'true' }}
         run: |
           echo "WireNotificationEngine has changes" |
+          echo "Fetching dependencies for WireNotificationEngine..." |
+          cd wire-ios-notification-engine |
+          carthage bootstrap --platform ios --use-xcframeworks |
+          cd .. |
           echo "Building WireNotificationEngine..." |
           xcodebuild build -workspace wire-ios.xcworkspace -scheme WireNotificationEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
           echo "Testing WireNotificationEngine..." |
