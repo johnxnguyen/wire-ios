@@ -215,17 +215,6 @@ jobs:
           
       - name: WireNotificationEngine
         if: ${{ needs.changes.outputs.notificationEngine == 'true' }}
-      - uses: actions/checkout@v3
-      - name: List available Xcode versions
-        run: ls /Applications | grep Xcode
-      - name: Select Xcode
-        run: |
-          sudo xcode-select -switch /Applications/Xcode_13.1.app
-          /usr/bin/xcodebuild -version
-      - name: Fetch dependencies
-        env:
-          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Any changes in Notification engine ?
         run: |
           echo "WireNotificationEngine has changes" |
           echo "Fetching dependencies for WireNotificationEngine..." |
@@ -248,6 +237,7 @@ jobs:
           carthage bootstrap --platform ios --use-xcframeworks |
           cd .. |
           echo "Building WireNotificationEngine..." |
+          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireLinkPreview -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
           xcodebuild build -workspace wire-ios.xcworkspace -scheme WireNotificationEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
           echo "Testing WireNotificationEngine..." |
           xcodebuild test -workspace wire-ios.xcworkspace -scheme WireNotificationEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
