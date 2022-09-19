@@ -215,6 +215,13 @@ jobs:
           
       - name: WireNotificationEngine
         if: ${{ needs.changes.outputs.notificationEngine == 'true' }}
+      - name: Select Xcode
+        run: |
+          sudo xcode-select -switch /Applications/Xcode_13.1.app
+          /usr/bin/xcodebuild -version
+      - name: Fetch dependencies
+        env:
+          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo "WireNotificationEngine has changes" |
           echo "Fetching dependencies for WireNotificationEngine..." |
