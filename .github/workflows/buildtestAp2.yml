@@ -218,6 +218,21 @@ jobs:
         run: |
           echo "WireNotificationEngine has changes" |
           echo "Fetching dependencies for WireNotificationEngine..." |
+          cd wire-ios-protos |
+          carthage bootstrap --platform ios --use-xcframeworks |
+          cd .. |
+          cd wire-ios-link-preview |
+          carthage bootstrap --platform ios --use-xcframeworks |
+          cd .. |
+          cd wire-ios-transport |
+          carthage bootstrap --platform ios --use-xcframeworks |
+          cd .. |
+          cd wire-ios-data-model |
+          carthage bootstrap --platform ios --use-xcframeworks |
+          cd .. |
+          cd wire-ios-cryptobox |
+          carthage bootstrap --platform ios --use-xcframeworks |
+          cd .. |
           cd wire-ios-notification-engine |
           carthage bootstrap --platform ios --use-xcframeworks |
           cd .. |
