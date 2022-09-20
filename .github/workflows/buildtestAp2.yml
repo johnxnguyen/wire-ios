@@ -222,6 +222,8 @@ jobs:
         run: |
           echo "WireNotificationEngine has changes" |
           echo "Fetching dependencies for WireNotificationEngine..." |
+          echo "Building WireTesting..." |
+          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireTesting -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
           echo "Building WireNotificationEngine..." |
           xcodebuild build -workspace wire-ios.xcworkspace -scheme WireNotificationEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
           echo "Testing WireNotificationEngine..." |
