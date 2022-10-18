@@ -259,7 +259,7 @@ jobs:
       - name: WireUI
         if: ${{ needs.changes.outputs.ui == 'true' }}
         run: |
-          echo "WireUI has changes" |
+          echo "WireUI has changes.." |
           echo "Setting up WireUI..." |
           cd wire-ios |
           ./setup.sh |
