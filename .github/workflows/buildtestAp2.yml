@@ -256,17 +256,17 @@ jobs:
           xcodebuild test -workspace wire-ios.xcworkspace -scheme WireSyncEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
           exit ${PIPESTATUS[0]}
           
-      - name: WireUI
-        if: ${{ needs.changes.outputs.ui == 'true' }}
-        run: |
-          echo "WireUI has any changes ?" |
-          echo "Setting up WireUI..." |
-          cd wire-ios |
-          ./setup.sh |
-          cd .. |
-          echo "Building WireUI..." |
-          xcodebuild build -workspace wire-ios.xcworkspace -scheme Wire-iOS -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
-          echo "Testing WireUI..." |
-          xcodebuild test -workspace wire-ios.xcworkspace -scheme Wire-iOS -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
-          exit ${PIPESTATUS[0]}
+      #- name: WireUI
+      #  if: ${{ needs.changes.outputs.ui == 'true' }}
+      #  run: |
+      #    echo "WireUI has any changes ?" |
+      #  echo "Setting up WireUI..." |
+      #    cd wire-ios |
+      #    ./setup.sh |
+      #    cd .. |
+      #    echo "Building WireUI..." |
+      #    xcodebuild build -workspace wire-ios.xcworkspace -scheme Wire-iOS -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+      #    echo "Testing WireUI..." |
+      #    xcodebuild test -workspace wire-ios.xcworkspace -scheme Wire-iOS -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' | xcpretty
+      #    exit ${PIPESTATUS[0]}
       
