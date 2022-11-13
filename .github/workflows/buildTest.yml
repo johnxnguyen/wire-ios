@@ -1,0 +1,635 @@
+name: buildTest
+
+on:
+  pull_request:
+    branches: [ "develop" ]
+    paths: 
+      - 'wire-ios/**'
+      
+jobs:
+  # JOB to run change detection
+  changes:
+    runs-on: ubuntu-latest
+    # Set job outputs to values from filter step
+    outputs:
+      ui: ${{ steps.filter.outputs.ui }}
+      syncEngine: ${{ steps.filter.outputs.syncEngine }}
+      dataModel: ${{ steps.filter.outputs.dataModel }}
+      iosSystem: ${{ steps.filter.outputs.iosSystem }}
+      requestStrategy: ${{ steps.filter.outputs.requestStrategy }}
+      transport: ${{ steps.filter.outputs.transport }}
+      shareEngine: ${{ steps.filter.outputs.shareEngine }}
+      cryptobox: ${{ steps.filter.outputs.cryptobox }}
+      mockTransport: ${{ steps.filter.outputs.mockTransport }}
+      notificationEngine: ${{ steps.filter.outputs.notificationEngine }}
+      wireImages: ${{ steps.filter.outputs.wireImages }}
+      utilities: ${{ steps.filter.outputs.utilities }}
+      wireTesting : ${{ steps.filter.outputs.utilities }}
+      
+    steps:
+    # For pull requests it's not necessary to checkout the code
+    - uses: dorny/paths-filter@v2
+      id: filter
+      with:
+        filters: |
+          ui:
+            - 'wire-ios/**'
+          syncEngine:
+            - 'wire-ios-sync-engine/**'
+          dataModel:
+            - 'wire-ios-data-model/**'
+          iosSystem:
+            - 'wire-ios-system/**'
+          requestStrategy:
+            - 'wire-ios-request-strategy/**'
+          transport:
+            - 'wire-ios-transport/**'
+          shareEngine:
+            - 'wire-ios-share-engine/**'
+          cryptobox:
+            - 'wire-ios-cryptobox/**'
+          mockTransport:
+            - 'wire-ios-mock-transport/**'
+          notificationEngine:
+            - 'wire-ios-notification-engine/**'
+          wireImages:
+            - 'wire-ios-images/**'
+          utilities:
+            - 'wire-ios-utilities/**'  
+          wireTesting:
+            - 'wire-ios-testing/**'  
+
+  build:
+    needs: changes
+    env:
+      derivePath: "DerivedData"
+    
+    runs-on: macOS-latest
+      
+    steps:
+      - uses: actions/checkout@v3
+      - name: List available Xcode versions
+        run: ls /Applications | grep Xcode
+      
+      - name: Select Xcode
+        run: |
+          sudo xcode-select -switch /Applications/Xcode_13.1.app
+          /usr/bin/xcodebuild -version
+      - name: Fetch dependencies
+        env:
+          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./setup.sh
+
+      - name: Build
+        run: |
+          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireDataModel -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
+          xcodebuild build -workspace wire-ios.xcworkspace -scheme WireSyncEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
+          xcodebuild build -workspace wire-ios.xcworkspace -scheme Wire-iOS -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
+          exit ${PIPESTATUS[0]}
+          #xcodebuild build -project Wire-iOS.xcodeproj -scheme Wire-iOS 
+          
+      - name: Upload products
+        uses: actions/upload-artifact@v1
+        with:
+          name: Products
+          path: DerivedData
+           
+  testUI:  
+    needs: 
+      - build
+      - changes
+      
+    if: ${{ needs.changes.outputs.ui == 'true' }}
+    env:
+      derivePath: "DerivedData"
+    
+    runs-on: macos-latest
+  
+    steps:
+      - uses: actions/checkout@v1
+      - name: List available Xcode versions
+        run: ls /Applications | grep Xcode
+      
+      - name: Select Xcode
+        run: |
+          sudo xcode-select -switch /Applications/Xcode_13.1.app
+          /usr/bin/xcodebuild -version
+      - name: Fetch dependencies
+        env:
+          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./setup.sh
+      
+      
+      - name: Download products
+        uses: actions/download-artifact@v1
+        with:
+          name: Products
+            
+      - name: Run UI Tests
+        run: |
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme Wire-iOS -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
+          
+      
+  testSyncEngine:  
+    needs: 
+      - build
+      - changes
+
+    if: ${{ needs.changes.outputs.syncEngine == 'true' }}
+    env:
+      derivePath: "DerivedData"
+    
+    runs-on: macos-latest
+      
+    steps:
+    - name: Fetch derive path from job one
+      run: echo ${{needs.build.outputs.derivePath}}
+    - uses: actions/checkout@v1
+    - name: List available Xcode versions
+      run: ls /Applications | grep Xcode
+      
+    - name: Select Xcode
+      run: |
+          sudo xcode-select -switch /Applications/Xcode_13.1.app
+          /usr/bin/xcodebuild -version
+    - name: Fetch dependencies
+      env:
+        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: ./setup.sh
+      
+    - name: Download products
+      uses: actions/download-artifact@v1
+      with:
+        name: Products
+    - name: Build Wire testing
+      run: |
+        xcodebuild build -workspace wire-ios.xcworkspace -scheme WireTesting -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
+          
+    - name: Run UI Tests For Sync Engine
+      run: |
+      
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireSyncEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
+     
+     
+  testDataModel:  
+    needs: 
+      - build
+      - changes
+
+    if: ${{ needs.changes.outputs.dataModel == 'true' }}
+    env:
+      derivePath: "DerivedData"
+    
+    runs-on: macos-latest
+    steps:
+    - name: Fetch derive path from job one
+      run: echo ${{needs.build.outputs.derivePath}}
+      
+    - uses: actions/checkout@v1
+    - name: List available Xcode versions
+      run: ls /Applications | grep Xcode
+      
+    - name: Select Xcode
+      run: |
+          sudo xcode-select -switch /Applications/Xcode_13.1.app
+          /usr/bin/xcodebuild -version
+    - name: Fetch dependencies
+      env:
+        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: ./setup.sh
+          
+    - name: Download products
+      uses: actions/download-artifact@v1
+      with:
+        name: Products
+    
+    - name: Build Wire testing
+      run: |
+        xcodebuild build -workspace wire-ios.xcworkspace -scheme WireTesting -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
+
+    - name: Run UI Tests For WireDataModel
+      run: |
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireDataModel -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
+
+  testWireRequestStrategy:  
+    needs: 
+      - build
+      - changes
+
+    if: ${{ needs.changes.outputs.requestStrategy == 'true' }}
+    env:
+      derivePath: "DerivedData"
+    
+    runs-on: macos-latest
+    steps:
+    - name: Fetch derive path from job one
+      run: echo ${{needs.build.outputs.derivePath}}
+      
+    - uses: actions/checkout@v1
+    - name: List available Xcode versions
+      run: ls /Applications | grep Xcode
+      
+    - name: Select Xcode
+      run: |
+          sudo xcode-select -switch /Applications/Xcode_13.1.app
+          /usr/bin/xcodebuild -version
+    - name: Fetch dependencies
+      env:
+        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: ./setup.sh
+        
+    - name: Download products
+      uses: actions/download-artifact@v1
+      with:
+        name: Products
+    
+    - name: Build Wire testing
+      run: |
+        xcodebuild build -workspace wire-ios.xcworkspace -scheme WireTesting -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
+
+    - name: Run UI Tests For WireRequestStrategy
+      run: |
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireRequestStrategy -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
+     
+  testWireTesting:  
+    needs: 
+      - build
+      - changes
+
+    if: ${{ needs.changes.outputs.wireTesting == 'true' }}
+    env:
+      derivePath: "DerivedData"
+    
+    runs-on: macos-latest
+    steps:
+    - name: Fetch derive path from job one
+      run: echo ${{needs.build.outputs.derivePath}}
+    - uses: actions/checkout@v1
+    - name: List available Xcode versions
+      run: ls /Applications | grep Xcode
+      
+    - name: Select Xcode
+      run: |
+          sudo xcode-select -switch /Applications/Xcode_13.1.app
+          /usr/bin/xcodebuild -version
+    - name: Fetch dependencies
+      env:
+        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: ./setup.sh
+    - name: Download products
+      uses: actions/download-artifact@v1
+      with:
+        name: Products
+    
+    - name: Build Wire testing
+      run: |
+        xcodebuild build -workspace wire-ios.xcworkspace -scheme WireTesting -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
+
+    - name: Run UI Tests For WireSystem
+      run: |
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireTesting -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
+
+  testWireSystem:  
+    needs: 
+      - build
+      - changes
+
+    if: ${{ needs.changes.outputs.iosSystem == 'true' }}
+    env:
+      derivePath: "DerivedData"
+    
+    runs-on: macos-latest
+    steps:
+    - name: Fetch derive path from job one
+      run: echo ${{needs.build.outputs.derivePath}}
+    - uses: actions/checkout@v1
+    - name: List available Xcode versions
+      run: ls /Applications | grep Xcode
+      
+    - name: Select Xcode
+      run: |
+          sudo xcode-select -switch /Applications/Xcode_13.1.app
+          /usr/bin/xcodebuild -version
+    - name: Fetch dependencies
+      env:
+        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: ./setup.sh
+    - name: Download products
+      uses: actions/download-artifact@v1
+      with:
+        name: Products
+    
+    - name: Build Wire testing
+      run: |
+        xcodebuild build -workspace wire-ios.xcworkspace -scheme WireTesting -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
+
+    - name: Run UI Tests For WireSystem
+      run: |
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireSystem -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
+     
+  testWireTransport:
+    needs: 
+      - build
+      - changes
+
+    if: ${{ needs.changes.outputs.transport == 'true' }}
+    env:
+      derivePath: "DerivedData"
+    
+    runs-on: macos-latest
+    steps:
+    - name: Fetch derive path from job one
+      run: echo ${{needs.build.outputs.derivePath}}
+      
+    - uses: actions/checkout@v1
+    - name: List available Xcode versions
+      run: ls /Applications | grep Xcode
+      
+    - name: Select Xcode
+      run: |
+          sudo xcode-select -switch /Applications/Xcode_13.1.app
+          /usr/bin/xcodebuild -version
+    - name: Fetch dependencies
+      env:
+        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: ./setup.sh
+    - name: Download products
+      uses: actions/download-artifact@v1
+      with:
+        name: Products
+    
+    - name: Build Wire testing
+      run: |
+        xcodebuild build -workspace wire-ios.xcworkspace -scheme WireTesting -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
+
+    - name: Run UI Tests For WireTransport
+      run: |
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireTransport -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
+     
+  testWireShareEngine:
+    needs: 
+      - build
+      - changes
+
+    if: ${{ needs.changes.outputs.shareEngine == 'true' }}
+    env:
+      derivePath: "DerivedData"
+    
+    runs-on: macos-latest
+    steps:
+    - name: Fetch derive path from job one
+      run: echo ${{needs.build.outputs.derivePath}}
+      
+    - uses: actions/checkout@v1
+    - name: List available Xcode versions
+      run: ls /Applications | grep Xcode
+      
+    - name: Select Xcode
+      run: |
+          sudo xcode-select -switch /Applications/Xcode_13.1.app
+          /usr/bin/xcodebuild -version
+    - name: Fetch dependencies
+      env:
+        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: ./setup.sh
+    - name: Download products
+      uses: actions/download-artifact@v1
+      with:
+        name: Products
+    
+    - name: Build Wire testing
+      run: |
+        xcodebuild build -workspace wire-ios.xcworkspace -scheme WireTesting -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
+
+    - name: Run UI Tests For WireShareEngine
+      run: |
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireShareEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
+     
+  testWireCryptobox:
+    needs: 
+      - build
+      - changes
+
+    if: ${{ needs.changes.outputs.cryptobox == 'true' }}
+    env:
+      derivePath: "DerivedData"
+    runs-on: macos-latest
+    steps:
+    - name: Fetch derive path from job one
+      run: echo ${{needs.build.outputs.derivePath}}
+      
+    - uses: actions/checkout@v1
+    - name: List available Xcode versions
+      run: ls /Applications | grep Xcode
+      
+    - name: Select Xcode
+      run: |
+          sudo xcode-select -switch /Applications/Xcode_13.1.app
+          /usr/bin/xcodebuild -version
+    - name: Fetch dependencies
+      env:
+        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: ./setup.sh
+    - name: Download products
+      uses: actions/download-artifact@v1
+      with:
+        name: Products
+    
+    - name: Build Wire testing
+      run: |
+        xcodebuild build -workspace wire-ios.xcworkspace -scheme WireTesting -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
+
+    - name: Run UI Tests For WireCryptobox
+      run: |
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireCryptobox -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
+     
+  testWireMockTransport:
+    needs: 
+      - build
+      - changes
+    
+    if: ${{ needs.changes.outputs.mockTransport == 'true' }}
+    env:
+      derivePath: "DerivedData"
+    runs-on: macos-latest
+    steps:
+    - name: Fetch derive path from job one
+      run: echo ${{needs.build.outputs.derivePath}}
+      
+    - uses: actions/checkout@v1
+    - name: List available Xcode versions
+      run: ls /Applications | grep Xcode
+      
+    - name: Select Xcode
+      run: |
+          sudo xcode-select -switch /Applications/Xcode_13.1.app
+          /usr/bin/xcodebuild -version
+    - name: Fetch dependencies
+      env:
+        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: ./setup.sh
+    - name: Download products
+      uses: actions/download-artifact@v1
+      with:
+        name: Products
+    
+    - name: Build Wire testing
+      run: |
+        xcodebuild build -workspace wire-ios.xcworkspace -scheme WireTesting -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
+
+    - name: Run UI Tests For WireMockTransport
+      run: |
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireMockTransport -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
+     
+  testWireNotificationEngine:
+    needs: 
+      - build
+      - changes
+
+    if: ${{ needs.changes.outputs.notificationEngine == 'true' }}
+    env:
+      derivePath: "DerivedData"
+    runs-on: macos-latest
+    steps:
+    - name: Fetch derive path from job one
+      run: echo ${{needs.build.outputs.derivePath}}
+      
+    - uses: actions/checkout@v1
+    - name: List available Xcode versions
+      run: ls /Applications | grep Xcode
+      
+    - name: Select Xcode
+      run: |
+          sudo xcode-select -switch /Applications/Xcode_13.1.app
+          /usr/bin/xcodebuild -version
+    - name: Fetch dependencies
+      env:
+        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: ./setup.sh
+    - name: Download products
+      uses: actions/download-artifact@v1
+      with:
+        name: Products
+    
+    - name: Build Wire testing For Sync Engine
+      run: |
+        xcodebuild build -workspace wire-ios.xcworkspace -scheme WireTesting -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
+
+    - name: Run UI Tests For WireNotificationEngine
+      run: |
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireNotificationEngine -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
+     
+  testWireImages:
+    needs: 
+      - build
+      - changes
+     
+    if: ${{ needs.changes.outputs.wireImages == 'true' }}
+    env:
+      derivePath: "DerivedData"
+    runs-on: macos-latest
+    steps:
+    - name: Fetch derive path from job one
+      run: echo ${{needs.build.outputs.derivePath}}
+      
+    - uses: actions/checkout@v1
+    - name: List available Xcode versions
+      run: ls /Applications | grep Xcode
+      
+    - name: Select Xcode
+      run: |
+          sudo xcode-select -switch /Applications/Xcode_13.1.app
+          /usr/bin/xcodebuild -version
+    - name: Fetch dependencies
+      env:
+        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: ./setup.sh
+    - name: Download products
+      uses: actions/download-artifact@v1
+      with:
+        name: Products            
+   
+    - name: Build Wire testing
+      run: |
+        xcodebuild build -workspace wire-ios.xcworkspace -scheme WireTesting -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
+ 
+    - name: Run UI Tests For WireImages
+      run: |
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireImages -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0'  -derivedDataPath $derivePath | xcpretty
+     
+  testWireLinkPreview:
+    needs: 
+      - build
+      - changes
+
+    if: ${{ needs.changes.outputs.linkPreview == 'true' }}
+    env:
+      derivePath: "DerivedData"
+    runs-on: macos-latest
+    steps:
+    - name: Fetch derive path from job one
+      run: echo ${{needs.build.outputs.derivePath}}
+      
+    - uses: actions/checkout@v1
+    - name: List available Xcode versions
+      run: ls /Applications | grep Xcode
+      
+    - name: Select Xcode
+      run: |
+          sudo xcode-select -switch /Applications/Xcode_13.1.app
+          /usr/bin/xcodebuild -version
+    - name: Fetch dependencies
+      env:
+        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: ./setup.sh    
+    - name: Download products
+      uses: actions/download-artifact@v1
+      with:
+        name: Products
+    
+    - name: Build Wire testing
+      run: |
+        xcodebuild build -workspace wire-ios.xcworkspace -scheme WireTesting -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
+
+    - name: Run UI Tests For WireLinkPreview
+      run: |
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireLinkPreview -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
+     
+  testWireUtilities:
+    needs: 
+      - build
+      - changes
+     
+    if: ${{ needs.changes.outputs.utilities == 'true' }}
+    env:
+      derivePath: "DerivedData"
+    runs-on: macos-latest
+    steps:
+    - name: Fetch derive path from job one
+      run: echo ${{needs.build.outputs.derivePath}}
+      
+    - uses: actions/checkout@v1
+    - name: List available Xcode versions
+      run: ls /Applications | grep Xcode
+      
+    - name: Select Xcode
+      run: |
+          sudo xcode-select -switch /Applications/Xcode_13.1.app
+          /usr/bin/xcodebuild -version
+    - name: Fetch dependencies
+      env:
+        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: ./setup.sh
+    - name: Download products
+      uses: actions/download-artifact@v1
+      with:
+        name: Products
+
+    - name: Build Wire testing
+      run: |
+        xcodebuild build -workspace wire-ios.xcworkspace -scheme WireTesting -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
+
+    - name: Run UI Tests For WireUtilities
+      run: |
+          xcodebuild test -workspace wire-ios.xcworkspace -scheme WireUtilities -destination 'platform=iOS Simulator,name=iPhone 8,OS=15.0' -derivedDataPath $derivePath | xcpretty
+     

@@ -22,6 +22,7 @@ extension NSManagedObjectContext {
 
     /// Applies the required patches for the current version of the persisted data
     public func applyPersistedDataPatchesForCurrentVersion() {
+        LegacyPersistedDataPatch.applyAll(in: self)
         PersistedDataPatch.applyAll(in: self)
     }
 }
